@@ -357,6 +357,11 @@ function buatKartuProduk(product) {
         ? `<p class="min-order">⚠️ ${product.min_order_text}</p>`
         : (product.isi_text ? `<p class="min-order">📦 ${product.isi_text}</p>` : '');
 
+    // Qty yang otomatis masuk ke keranjang saat "Beli Sekarang" diklik.
+    // Ambil dari min_order_qty (angka di database); kalau kosong/0, default 1.
+    const qtyOtomatis = Number(product.min_order_qty) > 0 ? Number(product.min_order_qty) : 1;
+    const satuanOtomatis = qtyOtomatis > 1 ? 'pcs' : '';
+
     return `
         <div class="card reveal-child" data-category="${slug}" data-name="${product.name.toLowerCase()}">
             ${badgeHtml}
@@ -366,7 +371,7 @@ function buatKartuProduk(product) {
                 <p>${product.description || ''}</p>
                 ${minOrderHtml}
                 <div class="price">${hargaLabel}</div>
-                <button class="btn-buy" onclick="beliRoti('${product.name}', ${harga}, 1, '', ${product.id})">Beli Sekarang</button>
+                <button class="btn-buy" onclick="beliRoti('${product.name}', ${harga}, ${qtyOtomatis}, '${satuanOtomatis}', ${product.id})">Beli Sekarang</button>
             </div>
         </div>
     `;
