@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://gachifa-backend-production.up.railway.app/api";
+const API_BASE_URL = "https://gachifa-backend-production.up.railway.app/api";
 const CUSTOMER_TOKEN_KEY = "gachifaCustomerToken";
 const CUSTOMER_USER_KEY = "gachifaCustomerUser";
 const nomorWA = "6285741865864";
