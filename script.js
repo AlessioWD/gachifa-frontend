@@ -4,6 +4,13 @@ const CUSTOMER_USER_KEY = "gachifaCustomerUser";
 const nomorWA = "62881036505315";
 const CART_KEY = "gachifaKeranjang";
 
+// Supaya refresh halaman selalu balik ke posisi paling atas, bukan "ingat" posisi scroll terakhir
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+window.addEventListener('load', () => window.scrollTo(0, 0));
+
 function getCustomerToken() {
     return localStorage.getItem(CUSTOMER_TOKEN_KEY);
 }
