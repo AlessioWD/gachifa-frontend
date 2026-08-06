@@ -169,7 +169,7 @@
         try {
             const res = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
                     email: document.getElementById('login-email').value.trim(),
                     password: document.getElementById('login-password').value,
@@ -214,7 +214,7 @@
         try {
             const res = await fetch(`${API_BASE_URL}/register`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
                     name: document.getElementById('register-name').value.trim(),
                     email: document.getElementById('register-email').value.trim(),
