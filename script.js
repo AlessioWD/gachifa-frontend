@@ -151,6 +151,16 @@ function checkout() {
         return;
     }
 
+    const user = getCustomerUser();
+    if (user) {
+        const nameInput = document.getElementById('customer_name');
+        const phoneInput = document.getElementById('customer_phone');
+        const addressInput = document.getElementById('customer_address');
+        if (nameInput) nameInput.value = user.name || '';
+        if (phoneInput) phoneInput.value = user.phone || '';
+        if (addressInput) addressInput.value = user.address || '';
+    }
+
     const modal = document.getElementById('checkout-modal');
     if (modal) modal.classList.add('checkout-modal-show');
     document.body.style.overflow = 'hidden';
