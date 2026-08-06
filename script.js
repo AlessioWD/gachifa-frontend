@@ -232,7 +232,7 @@ async function confirmCheckout(event) {
         form.reset();
 
         window.open("https://wa.me/" + nomorWA + "?text=" + pesan, '_blank');
-        showToast('Pesanan tersimpan! Melanjutkan ke WhatsApp...');
+        showToast('Pesanan berhasil dibuat! Status: Pending. Cek progresnya di halaman Cek Status Order.', 4500);
     } catch (err) {
         if (errorEl) {
             errorEl.textContent = err.message;
@@ -459,7 +459,7 @@ async function submitContactForm(event) {
 
 let toastTimeout;
 
-function showToast(message) {
+function showToast(message, duration = 2500) {
     const toast = document.getElementById('toast');
     if (!toast) return;
 
@@ -469,7 +469,7 @@ function showToast(message) {
     clearTimeout(toastTimeout);
     toastTimeout = setTimeout(() => {
         toast.classList.remove('toast-show');
-    }, 2500);
+    }, duration);
 }
 
 /* ===== SCROLL REVEAL ANIMATION ===== */

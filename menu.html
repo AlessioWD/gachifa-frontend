@@ -7,6 +7,11 @@
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="style.css?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .checkout-info-note{background:#fff7ed;border:1px solid #fed7aa;color:#7c4a1f;font-size:0.85rem;line-height:1.4;padding:10px 12px;border-radius:8px;margin:4px 0 14px;}
+        .checkout-info-note i{color:#f97316;margin-right:4px;}
+        .checkout-info-note a{color:#c2410c;font-weight:600;text-decoration:underline;}
+    </style>
 </head>
 <body>
 
@@ -95,6 +100,7 @@
                     <label for="customer_address">Alamat (opsional)</label>
                     <textarea id="customer_address" name="customer_address" rows="2" placeholder="Alamat pengiriman"></textarea>
                 </div>
+                <p class="checkout-info-note"><i class="fas fa-circle-info"></i> Setelah pesan, kamu bisa cek status pesanan (Pending &rarr; Diproses &rarr; Dikirim &rarr; Selesai) lewat nomor WhatsApp ini di halaman <a href="track-order.html" target="_blank">Cek Status Order</a>.</p>
                 <p id="checkout-form-error" class="contact-form-status contact-form-error" style="display:none;"></p>
                 <button type="submit" class="btn-checkout" style="width:100%;"><i class="fab fa-whatsapp"></i> Konfirmasi & Lanjut ke WhatsApp</button>
             </form>
