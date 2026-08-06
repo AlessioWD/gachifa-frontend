@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gachifa Bakery | Kontak</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<nav>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Logo Gachifa" class="logo-img">
+        <div class="brand-name">
+            <span class="brand-orange">Gachifa</span>
+            <span class="brand-coklat">Bakery</span>
+        </div>
+    </div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Buka menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
+    <ul class="nav-links" id="navLinks">
+        <li class="nav-close-item">
+            <span class="nav-panel-title">Menu</span>
+            <button class="nav-close-btn" onclick="toggleMobileMenu()" aria-label="Tutup menu">&times;</button>
+        </li>
+        <li><a href="index.html" data-page="index"><i class="fas fa-house nav-icon"></i>Beranda</a></li>
+        <li><a href="menu.html" data-page="menu"><i class="fas fa-bread-slice nav-icon"></i>Menu <span id="nav-cart-count" class="nav-cart-badge" style="display:none;">0</span></a></li>
+        <li><a href="about.html" data-page="about"><i class="fas fa-circle-info nav-icon"></i>Tentang</a></li>
+        <li><a href="contact.html" data-page="contact"><i class="fas fa-phone nav-icon"></i>Kontak</a></li>
+        <li id="nav-account-item"><a href="account.html" data-page="account"><i class="fas fa-user nav-icon"></i><span id="nav-account-label">Masuk</span></a></li>
+    </ul>
+</nav>
+
+<div class="marquee">
+    <div class="marquee-track">
+        <span><i class="fas fa-circle"></i>ROTI HANGAT SETIAP HARI<i class="fas fa-circle"></i>DIBUAT DENGAN CINTA<i class="fas fa-circle"></i>SUPPLIER HOTEL, RESTO & CAFE<i class="fas fa-circle"></i>SEJAK 2010<i class="fas fa-circle"></i>PESAN VIA WHATSAPP</span>
+        <span aria-hidden="true"><i class="fas fa-circle"></i>ROTI HANGAT SETIAP HARI<i class="fas fa-circle"></i>DIBUAT DENGAN CINTA<i class="fas fa-circle"></i>SUPPLIER HOTEL, RESTO & CAFE<i class="fas fa-circle"></i>SEJAK 2010<i class="fas fa-circle"></i>PESAN VIA WHATSAPP</span>
+    </div>
+</div>
+
+    <div class="page-banner">
+        <div class="floaty-shapes" aria-hidden="true">
+            <span class="floaty" style="top:20%; left:9%;">📞</span>
+            <span class="floaty floaty-slow floaty-reverse" style="top:62%; right:11%;">💌</span>
+        </div>
+        <h1>Hubungi Kami</h1>
+        <p>Kami senang mendengar dari Anda</p>
+    </div>
+
+    <section class="contact-section reveal-stagger reveal">
+        <a href="https://maps.app.goo.gl/NjX7WZfzZedw4bFBA?g_st=aw" target="_blank" class="contact-card contact-card-link reveal-child">
+            <i class="fas fa-map-marker-alt"></i>
+            <h4>Alamat</h4>
+            <p>Jl. Srikoyo Blok K3/8, Oro-Oro Ombo, Kota Batu, Jawa Timur</p>
+            <span class="contact-card-cta">Buka di Google Maps <i class="fas fa-arrow-up-right-from-square"></i></span>
+        </a>
+        <div class="contact-card reveal-child">
+            <i class="fas fa-phone"></i>
+            <h4>Telepon</h4>
+            <p>08810 3650 5315</p>
+        </div>
+        <div class="contact-card reveal-child">
+            <i class="fas fa-envelope"></i>
+            <h4>Email</h4>
+            <p>gachifabakery@gmail.com</p>
+        </div>
+        <div class="contact-card reveal-child">
+            <i class="fab fa-whatsapp"></i>
+            <h4>WhatsApp</h4>
+            <a href="https://wa.me/62881036505315?text=Hallo%20Gachifa%20Bakery!%20Saya%20ingin%20bertanya%20perihal%20roti%20nya%20dong" target="_blank" class="btn" style="margin-top:10px;">Chat Sekarang</a>
+        </div>
+    </section>
+
+    <section class="contact-form-section reveal">
+        <h2 class="section-title">Kirim Pesan</h2>
+        <p class="section-desc">Ada pertanyaan atau masukan? Isi form di bawah ini.</p>
+
+        <form id="contact-form" class="contact-form" onsubmit="submitContactForm(event)">
+            <div class="form-group">
+                <label for="contact-name">Nama</label>
+                <input type="text" id="contact-name" name="name" required placeholder="Nama lengkap Anda">
+            </div>
+            <div class="form-group">
+                <label for="contact-email">Email</label>
+                <input type="email" id="contact-email" name="email" required placeholder="email@contoh.com">
+            </div>
+            <div class="form-group">
+                <label for="contact-phone">Nomor HP (opsional)</label>
+                <input type="tel" id="contact-phone" name="phone" placeholder="08xxxxxxxxxx">
+            </div>
+            <div class="form-group">
+                <label for="contact-message">Pesan</label>
+                <textarea id="contact-message" name="message" required rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
+            </div>
+            <button type="submit" class="btn">Kirim Pesan</button>
+            <p id="contact-form-status" class="contact-form-status" style="display:none;"></p>
+        </form>
+    </section>
+
+    <section class="social-section reveal">
+        <h2 class="section-title">Ikuti Kami</h2>
+        <div class="social-links">
+            <a href="https://www.instagram.com/gachifabakery.id/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@gachifabakery?_r=1&_t=ZS-96W4dqvTECC" target="_blank" aria-label="TikTok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://wa.me/62881036505315?text=Hallo%20Gachifa%20Bakery!%20Saya%20ingin%20bertanya%20perihal%20roti%20nya%20dong" target="_blank" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </section>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col-brand">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <h3><span class="brand-orange">Gachifa</span> <span class="brand-coklat">Bakery</span></h3>
+            <p class="footer-desc">Toko roti terpercaya sejak 2010. Menyediakan roti lembut dan lezat untuk kalian semua. Kami juga salah satu supplier Hotel, Resto, dan Cafe di Kota Batu.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/gachifabakery.id/" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@gachifabakery?_r=1&_t=ZS-96W4dqvTECC" target="_blank" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://wa.me/62881036505315?text=Hallo%20Gachifa%20Bakery!%20Saya%20ingin%20bertanya%20perihal%20roti%20nya%20dong" target="_blank" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-heading">Jelajahi</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">Tentang</a></li>
+                <li><a href="contact.html">Kontak</a></li>
+                <li><a href="track-order.html">Cek Status Order</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-heading">Kontak</h4>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> Jl. Srikoyo Blok K3/8, Oro-Oro Ombo, Kota Batu, Jawa Timur</p>
+                <p><i class="fas fa-phone"></i> 08810 3650 5315</p>
+                <p><i class="fas fa-envelope"></i> gachifabakery@gmail.com</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2010 Gachifa Bakery. All Rights Reserved.</p>
+    </div>
+</footer>
+
+    <script src="script.js?v=2"></script>
+</body>
+</html>

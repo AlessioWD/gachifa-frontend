@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gachifa Bakery | Profil</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-section {
+            padding: 40px 8% 80px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .profile-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .profile-info h2 { margin: 0 0 4px; color: var(--dark); }
+        .profile-info p { margin: 0; color: #777; font-size: 0.9rem; }
+        .profile-logout-btn {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid #ddd;
+            color: var(--dark);
+            padding: 9px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .profile-logout-btn:hover { background: #f5f5f5; }
+
+        .order-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .order-card-header .order-date { color: #777; font-size: 0.82rem; }
+        .order-items { font-size: 0.9rem; color: #444; margin-bottom: 8px; }
+        .order-items div { padding: 3px 0; }
+        .order-total { font-weight: 700; color: var(--primary); text-align: right; }
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        .status-pending { background: #fdf3e0; color: #b8860b; }
+        .status-diproses { background: #e0ecfd; color: #1a5fb4; }
+        .status-dikirim { background: #ede0fd; color: #6a1ab4; }
+        .status-selesai { background: #e0fde6; color: #1e7e42; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Logo Gachifa" class="logo-img">
+        <div class="brand-name">
+            <span class="brand-orange">Gachifa</span>
+            <span class="brand-coklat">Bakery</span>
+        </div>
+    </div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Buka menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
+    <ul class="nav-links" id="navLinks">
+        <li class="nav-close-item">
+            <span class="nav-panel-title">Menu</span>
+            <button class="nav-close-btn" onclick="toggleMobileMenu()" aria-label="Tutup menu">&times;</button>
+        </li>
+        <li><a href="index.html" data-page="index"><i class="fas fa-house nav-icon"></i>Beranda</a></li>
+        <li><a href="menu.html" data-page="menu"><i class="fas fa-bread-slice nav-icon"></i>Menu <span id="nav-cart-count" class="nav-cart-badge" style="display:none;">0</span></a></li>
+        <li><a href="about.html" data-page="about"><i class="fas fa-circle-info nav-icon"></i>Tentang</a></li>
+        <li><a href="contact.html" data-page="contact"><i class="fas fa-phone nav-icon"></i>Kontak</a></li>
+        <li id="nav-account-item"><a href="account.html" data-page="account"><i class="fas fa-user nav-icon"></i><span id="nav-account-label">Masuk</span></a></li>
+    </ul>
+</nav>
+
+<div class="page-banner">
+    <h1>Profil Saya</h1>
+    <p>Data akun dan riwayat pesanan kamu</p>
+</div>
+
+<section class="profile-section">
+    <div class="profile-card">
+        <div class="profile-avatar" id="profile-avatar">?</div>
+        <div class="profile-info">
+            <h2 id="profile-name">Memuat...</h2>
+            <p id="profile-email"></p>
+        </div>
+        <button class="profile-logout-btn" onclick="handleLogout()"><i class="fas fa-right-from-bracket"></i> Keluar</button>
+    </div>
+
+    <h3 style="color:var(--dark);">Riwayat Pesanan</h3>
+    <div id="order-history">
+        <p style="color:#999;">Memuat riwayat pesanan...</p>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col-brand">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <h3><span class="brand-orange">Gachifa</span> <span class="brand-coklat">Bakery</span></h3>
+            <p class="footer-desc">Toko roti terpercaya sejak 2010. Menyediakan roti lembut dan lezat untuk kalian semua.</p>
+        </div>
+        <div class="footer-col">
+            <h4 class="footer-heading">Jelajahi</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">Tentang</a></li>
+                <li><a href="contact.html">Kontak</a></li>
+                <li><a href="track-order.html">Cek Status Order</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2010 Gachifa Bakery. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js?v=2"></script>
+<script>
+    const token = getCustomerToken();
+    if (!token) {
+        window.location.href = 'account.html';
+    }
+
+    function formatTanggal(iso) {
+        try {
+            return new Date(iso).toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } catch (e) {
+            return iso;
+        }
+    }
+
+    function handleLogout() {
+        logoutCustomer();
+        window.location.href = 'index.html';
+    }
+
+    async function loadProfile() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/me`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
+            });
+            if (res.status === 401) {
+                logoutCustomer();
+                window.location.href = 'account.html';
+                return;
+            }
+            const user = await res.json();
+            document.getElementById('profile-name').textContent = user.name;
+            document.getElementById('profile-email').textContent = user.email;
+            document.getElementById('profile-avatar').textContent = user.name.charAt(0).toUpperCase();
+        } catch (err) {
+            showToast('Gagal memuat profil.', true);
+        }
+    }
+
+    async function loadOrderHistory() {
+        const container = document.getElementById('order-history');
+        try {
+            const res = await fetch(`${API_BASE_URL}/my-orders`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
+            });
+            if (!res.ok) throw new Error('Gagal memuat riwayat pesanan.');
+            const orders = await res.json();
+
+            if (!orders.length) {
+                container.innerHTML = '<p style="color:#999;">Belum ada pesanan yang tercatat di akun ini. Pastikan kamu login sebelum checkout supaya pesanan berikutnya tercatat di sini.</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const items = order.items.map(it => `<div>${it.product ? it.product.name : '-'} x${it.qty} — Rp ${Number(it.subtotal).toLocaleString('id-ID')}</div>`).join('');
+                return `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span class="order-date">${formatTanggal(order.created_at)}</span>
+                            <span class="badge-status status-${order.status}">${order.status}</span>
+                        </div>
+                        <div class="order-items">${items}</div>
+                        <div class="order-total">Total: Rp ${Number(order.total_price).toLocaleString('id-ID')}</div>
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            container.innerHTML = `<p style="color:#c0392b;">${err.message}</p>`;
+        }
+    }
+
+    if (token) {
+        loadProfile();
+        loadOrderHistory();
+    }
+</script>
+</body>
+</html>

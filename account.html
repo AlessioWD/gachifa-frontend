@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gachifa Bakery | Akun</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-section {
+            padding: 40px 8% 80px;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+        .auth-tabs {
+            display: flex;
+            background: #f1e7dd;
+            border-radius: 30px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: 0.25s;
+        }
+        .auth-tab.active { background: var(--primary); color: white; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .auth-form-status {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Logo Gachifa" class="logo-img">
+        <div class="brand-name">
+            <span class="brand-orange">Gachifa</span>
+            <span class="brand-coklat">Bakery</span>
+        </div>
+    </div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Buka menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
+    <ul class="nav-links" id="navLinks">
+        <li class="nav-close-item">
+            <span class="nav-panel-title">Menu</span>
+            <button class="nav-close-btn" onclick="toggleMobileMenu()" aria-label="Tutup menu">&times;</button>
+        </li>
+        <li><a href="index.html" data-page="index"><i class="fas fa-house nav-icon"></i>Beranda</a></li>
+        <li><a href="menu.html" data-page="menu"><i class="fas fa-bread-slice nav-icon"></i>Menu <span id="nav-cart-count" class="nav-cart-badge" style="display:none;">0</span></a></li>
+        <li><a href="about.html" data-page="about"><i class="fas fa-circle-info nav-icon"></i>Tentang</a></li>
+        <li><a href="contact.html" data-page="contact"><i class="fas fa-phone nav-icon"></i>Kontak</a></li>
+        <li id="nav-account-item"><a href="account.html" data-page="account"><i class="fas fa-user nav-icon"></i><span id="nav-account-label">Masuk</span></a></li>
+    </ul>
+</nav>
+
+<div class="page-banner">
+    <h1>Akun Saya</h1>
+    <p>Masuk atau daftar untuk melihat riwayat pesananmu</p>
+</div>
+
+<section class="auth-section">
+    <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Masuk</div>
+        <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Daftar</div>
+    </div>
+
+    <!-- FORM LOGIN -->
+    <form id="login-form" class="auth-form active">
+        <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required placeholder="email@contoh.com">
+        </div>
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required placeholder="Password">
+        </div>
+        <button type="submit" class="btn" style="width:100%;" id="login-btn">Masuk</button>
+        <p id="login-status" class="auth-form-status"></p>
+    </form>
+
+    <!-- FORM REGISTER -->
+    <form id="register-form" class="auth-form">
+        <div class="form-group">
+            <label for="register-name">Nama</label>
+            <input type="text" id="register-name" required placeholder="Nama lengkap">
+        </div>
+        <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" required placeholder="email@contoh.com">
+        </div>
+        <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" required minlength="6" placeholder="Minimal 6 karakter">
+        </div>
+        <div class="form-group">
+            <label for="register-password-confirm">Konfirmasi Password</label>
+            <input type="password" id="register-password-confirm" required minlength="6" placeholder="Ulangi password">
+        </div>
+        <button type="submit" class="btn" style="width:100%;" id="register-btn">Daftar</button>
+        <p id="register-status" class="auth-form-status"></p>
+    </form>
+</section>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col-brand">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <h3><span class="brand-orange">Gachifa</span> <span class="brand-coklat">Bakery</span></h3>
+            <p class="footer-desc">Toko roti terpercaya sejak 2010. Menyediakan roti lembut dan lezat untuk kalian semua. Kami juga salah satu supplier Hotel, Resto, dan Cafe di Kota Batu.</p>
+        </div>
+        <div class="footer-col">
+            <h4 class="footer-heading">Jelajahi</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">Tentang</a></li>
+                <li><a href="contact.html">Kontak</a></li>
+                <li><a href="track-order.html">Cek Status Order</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2010 Gachifa Bakery. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js?v=2"></script>
+<script>
+    function switchAuthTab(tab) {
+        document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+        document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+        document.getElementById('login-form').classList.toggle('active', tab === 'login');
+        document.getElementById('register-form').classList.toggle('active', tab === 'register');
+    }
+
+    // Kalau sudah login, langsung arahkan ke profil
+    if (getCustomerToken()) {
+        window.location.href = 'profile.html';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('login-btn');
+        const statusEl = document.getElementById('login-status');
+        statusEl.style.display = 'none';
+        btn.disabled = true;
+        btn.innerText = 'Memproses...';
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: document.getElementById('login-email').value.trim(),
+                    password: document.getElementById('login-password').value,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Email atau password salah.');
+                throw new Error(firstError);
+            }
+            saveCustomerAuth(data.token, data.user);
+            window.location.href = 'profile.html';
+        } catch (err) {
+            statusEl.textContent = err.message;
+            statusEl.className = 'auth-form-status contact-form-error';
+            statusEl.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Masuk';
+        }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('register-btn');
+        const statusEl = document.getElementById('register-status');
+        statusEl.style.display = 'none';
+
+        const password = document.getElementById('register-password').value;
+        const passwordConfirm = document.getElementById('register-password-confirm').value;
+
+        if (password !== passwordConfirm) {
+            statusEl.textContent = 'Konfirmasi password tidak cocok.';
+            statusEl.className = 'auth-form-status contact-form-error';
+            statusEl.style.display = 'block';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = 'Memproses...';
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: document.getElementById('register-name').value.trim(),
+                    email: document.getElementById('register-email').value.trim(),
+                    password: password,
+                    password_confirmation: passwordConfirm,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Gagal mendaftar.');
+                throw new Error(firstError);
+            }
+            saveCustomerAuth(data.token, data.user);
+            window.location.href = 'profile.html';
+        } catch (err) {
+            statusEl.textContent = err.message;
+            statusEl.className = 'auth-form-status contact-form-error';
+            statusEl.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Daftar';
+        }
+    });
+</script>
+</body>
+</html>

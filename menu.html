@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gachifa Bakery | Menu</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<nav>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Logo Gachifa" class="logo-img">
+        <div class="brand-name">
+            <span class="brand-orange">Gachifa</span>
+            <span class="brand-coklat">Bakery</span>
+        </div>
+    </div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Buka menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
+    <ul class="nav-links" id="navLinks">
+        <li class="nav-close-item">
+            <span class="nav-panel-title">Menu</span>
+            <button class="nav-close-btn" onclick="toggleMobileMenu()" aria-label="Tutup menu">&times;</button>
+        </li>
+        <li><a href="index.html" data-page="index"><i class="fas fa-house nav-icon"></i>Beranda</a></li>
+        <li><a href="menu.html" data-page="menu"><i class="fas fa-bread-slice nav-icon"></i>Menu <span id="nav-cart-count" class="nav-cart-badge" style="display:none;">0</span></a></li>
+        <li><a href="about.html" data-page="about"><i class="fas fa-circle-info nav-icon"></i>Tentang</a></li>
+        <li><a href="contact.html" data-page="contact"><i class="fas fa-phone nav-icon"></i>Kontak</a></li>
+        <li id="nav-account-item"><a href="account.html" data-page="account"><i class="fas fa-user nav-icon"></i><span id="nav-account-label">Masuk</span></a></li>
+    </ul>
+</nav>
+
+<div class="marquee">
+    <div class="marquee-track">
+        <span><i class="fas fa-circle"></i>ROTI HANGAT SETIAP HARI<i class="fas fa-circle"></i>DIBUAT DENGAN CINTA<i class="fas fa-circle"></i>SUPPLIER HOTEL, RESTO & CAFE<i class="fas fa-circle"></i>SEJAK 2010<i class="fas fa-circle"></i>PESAN VIA WHATSAPP</span>
+        <span aria-hidden="true"><i class="fas fa-circle"></i>ROTI HANGAT SETIAP HARI<i class="fas fa-circle"></i>DIBUAT DENGAN CINTA<i class="fas fa-circle"></i>SUPPLIER HOTEL, RESTO & CAFE<i class="fas fa-circle"></i>SEJAK 2010<i class="fas fa-circle"></i>PESAN VIA WHATSAPP</span>
+    </div>
+</div>
+
+    <div class="page-banner">
+        <div class="floaty-shapes" aria-hidden="true">
+            <span class="floaty" style="top:20%; left:8%;">🥖</span>
+            <span class="floaty floaty-slow floaty-reverse" style="top:60%; right:10%;">🥯</span>
+        </div>
+        <h1>Menu Kami</h1>
+        <p>Pilih roti favoritmu, langsung masuk keranjang</p>
+    </div>
+
+    <section id="menu" class="menu-section">
+        <div class="menu-header-row">
+            <h2 class="section-title">Menu Favorit</h2>
+        </div>
+        <p class="section-desc">Pilih roti kesukaanmu...</p>
+
+        <div class="menu-toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari roti..." oninput="filterMenu()">
+                <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearch()" style="display:none;" aria-label="Hapus pencarian">&times;</button>
+            </div>
+            <div class="category-filters">
+                <button class="category-btn active" data-category="all" onclick="setCategory('all', this)">Semua</button>
+                <button class="category-btn" data-category="tawar" onclick="setCategory('tawar', this)">Roti Tawar</button>
+                <button class="category-btn" data-category="bun" onclick="setCategory('bun', this)">Bun & Roti Kecil</button>
+            </div>
+        </div>
+
+        <div class="product-grid reveal-stagger reveal" id="product-grid">
+            <p id="no-results" class="no-results" style="display:none;">Tidak ada roti yang cocok dengan pencarianmu.</p>
+            <p id="loading-products" style="color:#666;">Memuat menu...</p>
+        </div>
+    </section>
+
+    <div id="checkout-modal" class="checkout-modal-overlay">
+        <div class="checkout-modal-box">
+            <div class="riwayat-modal-header">
+                <h3><i class="fab fa-whatsapp"></i> Data Pemesan</h3>
+                <button class="riwayat-modal-close" onclick="closeCheckoutModal()">&times;</button>
+            </div>
+            <form id="checkout-form" onsubmit="confirmCheckout(event)">
+                <div class="form-group">
+                    <label for="customer_name">Nama</label>
+                    <input type="text" id="customer_name" name="customer_name" required placeholder="Nama lengkap Anda">
+                </div>
+                <div class="form-group">
+                    <label for="customer_phone">Nomor WhatsApp</label>
+                    <input type="tel" id="customer_phone" name="customer_phone" required placeholder="08xxxxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label for="customer_address">Alamat (opsional)</label>
+                    <textarea id="customer_address" name="customer_address" rows="2" placeholder="Alamat pengiriman"></textarea>
+                </div>
+                <p id="checkout-form-error" class="contact-form-status contact-form-error" style="display:none;"></p>
+                <button type="submit" class="btn-checkout" style="width:100%;"><i class="fab fa-whatsapp"></i> Konfirmasi & Lanjut ke WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="keranjang-section reveal">
+        <div class="keranjang-header">
+            <h2>Keranjang Belanja</h2>
+            <span id="keranjang-count">0 item</span>
+        </div>
+        <div id="keranjang-items">
+            <p style="color: #666;">Keranjang kosong...</p>
+        </div>
+        <button id="checkout-btn" class="btn-checkout" onclick="checkout()" style="display: none;">
+            <i class="fab fa-whatsapp"></i> Pesan Sekarang
+        </button>
+        <a href="track-order.html" class="btn-checkout btn-checkout-outline">
+            <i class="fas fa-magnifying-glass"></i> Cek Status Order Saya
+        </a>
+    </section>
+
+    <div id="toast" class="toast"></div>
+
+<footer id="contact">
+    <div class="footer-container">
+        <div class="footer-col-brand">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Logo">
+            </div>
+            <h3><span class="brand-orange">Gachifa</span> <span class="brand-coklat">Bakery</span></h3>
+            <p class="footer-desc">Toko roti terpercaya sejak 2010. Menyediakan roti lembut dan lezat untuk kalian semua. Kami juga salah satu supplier Hotel, Resto, dan Cafe di Kota Batu.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/gachifabakery.id/" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@gachifabakery?_r=1&_t=ZS-96W4dqvTECC" target="_blank" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://wa.me/62881036505315?text=Hallo%20Gachifa%20Bakery!%20Saya%20ingin%20bertanya%20perihal%20roti%20nya%20dong" target="_blank" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-heading">Jelajahi</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">Tentang</a></li>
+                <li><a href="contact.html">Kontak</a></li>
+                <li><a href="track-order.html">Cek Status Order</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-heading">Kontak</h4>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> Jl. Srikoyo Blok K3/8, Oro-Oro Ombo, Kota Batu, Jawa Timur</p>
+                <p><i class="fas fa-phone"></i> 08810 3650 5315</p>
+                <p><i class="fas fa-envelope"></i> gachifabakery@gmail.com</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2010 Gachifa Bakery. All Rights Reserved.</p>
+    </div>
+</footer>
+
+    <script src="script.js?v=2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', renderProductsFromApi);
+    </script>
+</body>
+</html>

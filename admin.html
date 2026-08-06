@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gachifa Bakery | Admin</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    :root {
+        --primary: #8B5E3C;
+        --primary-dark: #6e492e;
+        --white: #ffffff;
+        --dark: #2C1A14;
+        --bg: #FAF6F2;
+        --radius-lg: 20px;
+        --radius-md: 12px;
+        --shadow: 0 6px 20px rgba(139, 94, 60, 0.12);
+        --success: #1e7e42;
+        --danger: #c0392b;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--dark);
+    }
+    #login-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .login-box {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 40px 35px;
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+    }
+    .login-box img { width: 60px; margin-bottom: 10px; }
+    .login-box h2 { margin: 0 0 25px; color: var(--primary); }
+    .field { margin-bottom: 16px; text-align: left; }
+    .field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+    .field input, .field select, .field textarea {
+        width: 100%;
+        padding: 11px 13px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-family: inherit;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+    }
+    .btn {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 11px 22px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+    .btn:hover { background: var(--primary-dark); }
+    .btn.full { width: 100%; }
+    .btn.danger { background: var(--danger); }
+    .btn.small { padding: 6px 14px; font-size: 0.82rem; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    #login-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 10px;
+        display: none;
+    }
+
+    #admin-app { display: none; min-height: 100vh; }
+    .sidebar {
+        width: 220px;
+        background: var(--dark);
+        color: white;
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        padding: 25px 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar .brand { text-align: center; margin-bottom: 30px; padding: 0 15px; position: relative; }
+    .sidebar .brand img { width: 58px; margin-bottom: 10px; opacity: 0.95; }
+    .sidebar .brand div { font-weight: 600; font-size: 0.95rem; letter-spacing: 0.5px; color: #E9D8C4; }
+    .sidebar-close-btn { display: none; }
+    .sidebar nav { flex: 1; padding: 0 12px; }
+    .sidebar nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 4px;
+        color: #c9beb5;
+        text-decoration: none;
+        font-size: 0.92rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 10px;
+        border-left: none;
+        transition: background 0.2s, color 0.2s;
+    }
+    .sidebar nav a i { width: 18px; text-align: center; opacity: 0.85; }
+    .sidebar nav a:hover { background: rgba(255,255,255,0.06); color: white; }
+    .sidebar nav a.active { background: var(--primary); color: white; }
+    .sidebar nav a.active i { opacity: 1; }
+    .sidebar .logout-btn {
+        margin: 15px 25px 0;
+        background: transparent;
+        border: 1px solid #4a3a30;
+        color: #c9beb5;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.88rem;
+    }
+    .sidebar .logout-btn:hover { background: rgba(255,255,255,0.06); color: white; }
+
+    .main { margin-left: 220px; padding: 30px 35px; }
+    .main h1 { margin-top: 0; color: var(--primary); }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+    .stat-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        box-shadow: var(--shadow);
+    }
+    .stat-card .num { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    .stat-card .label { color: #777; font-size: 0.85rem; margin-top: 4px; }
+
+    .panel {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
+    th { color: #777; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+    .table-actions { display: flex; gap: 6px; }
+    .badge-status {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+    .status-pending { background: #fdf3e0; color: #b8860b; }
+    .status-diproses { background: #e0ecfd; color: #1a5fb4; }
+    .status-dikirim { background: #ede0fd; color: #6a1ab4; }
+    .status-selesai { background: #e0fde6; color: var(--success); }
+
+    .modal-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.4);
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 28px;
+        width: 100%;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .modal-box h3 { margin-top: 0; color: var(--primary); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .empty-msg { color: #999; text-align: center; padding: 25px 0; }
+    .toast {
+        position: fixed;
+        bottom: 25px; right: 25px;
+        background: var(--dark);
+        color: white;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.3s;
+        z-index: 200;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .mobile-topbar { display: none; }
+    .hamburger-btn { display: none; }
+    .mobile-nav-overlay { display: none; }
+
+    @media (max-width: 800px) {
+        .mobile-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--dark);
+            padding: 14px 18px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .mobile-topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #E9D8C4;
+            font-weight: 700;
+        }
+        .mobile-topbar-brand img { width: 32px; }
+        .hamburger-btn {
+            display: block;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .mobile-nav-overlay.show {
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 90;
+        }
+
+        .sidebar {
+            width: 66%;
+            max-width: 250px;
+            height: 100vh;
+            height: 100dvh;
+            position: fixed;
+            top: 0; left: auto; right: 0; bottom: auto;
+            flex-direction: column;
+            align-items: stretch;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 22px 0;
+            padding-bottom: max(22px, env(safe-area-inset-bottom));
+            border-radius: 18px 0 0 18px;
+            box-shadow: -8px 0 30px rgba(0,0,0,0.25);
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+            z-index: 100;
+        }
+        .sidebar.mobile-show { transform: translateX(0); }
+        .sidebar .brand { display: block; }
+        .sidebar-close-btn {
+            display: block;
+            position: absolute;
+            top: -4px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            color: #c9beb5;
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .sidebar-close-btn:hover { color: white; }
+        .sidebar nav {
+            display: block;
+            flex: none;
+            width: 100%;
+            padding: 0 12px;
+        }
+        .sidebar .logout-btn { margin: 20px 22px 0; margin-top: auto; }
+        .main { margin-left: 0; padding: 20px 15px; }
+        table { font-size: 0.8rem; }
+        .panel { overflow-x: auto; }
+        table { display: block; overflow-x: auto; white-space: nowrap; }
+        #admin-app { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+    <div class="login-box">
+        <img src="images/logo.png" alt="Logo">
+        <h2>Admin Gachifa Bakery</h2>
+        <form id="login-form">
+            <div class="field">
+                <label>Email</label>
+                <input type="email" id="login-email" required placeholder="admin@gachifa.com">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" id="login-password" required placeholder="Password">
+            </div>
+            <button type="submit" class="btn full" id="login-submit-btn">Masuk</button>
+            <p id="login-error"></p>
+        </form>
+    </div>
+</div>
+
+<!-- ===== ADMIN APP ===== -->
+<div id="admin-app">
+    <div class="mobile-topbar">
+        <div class="mobile-topbar-brand">
+            <img src="images/logo.png" alt="Logo">
+            <span>Gachifa Admin</span>
+        </div>
+        <button class="hamburger-btn" onclick="toggleAdminMobileMenu()" aria-label="Buka menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeAdminMobileMenu()"></div>
+
+    <aside class="sidebar" id="admin-sidebar">
+        <div class="brand">
+            <button class="sidebar-close-btn" onclick="closeAdminMobileMenu()" aria-label="Tutup menu">&times;</button>
+            <img src="images/logo.png" alt="Logo">
+            <div>Gachifa Admin</div>
+        </div>
+        <nav>
+            <a data-page="dashboard" class="active" onclick="showPage('dashboard', this)"><i class="fas fa-gauge"></i> Dashboard</a>
+            <a data-page="produk" onclick="showPage('produk', this)"><i class="fas fa-bread-slice"></i> Produk</a>
+            <a data-page="kategori" onclick="showPage('kategori', this)"><i class="fas fa-tags"></i> Kategori</a>
+            <a data-page="order" onclick="showPage('order', this)"><i class="fas fa-receipt"></i> Order</a>
+            <a data-page="pesan" onclick="showPage('pesan', this)"><i class="fas fa-envelope"></i> Pesan Masuk</a>
+        </nav>
+        <button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-right-from-bracket"></i> Logout</button>
+    </aside>
+
+    <main class="main">
+        <!-- DASHBOARD -->
+        <section id="page-dashboard" class="page active">
+            <h1>Dashboard</h1>
+            <div class="stat-grid" id="stat-grid">
+                <div class="empty-msg">Memuat statistik...</div>
+            </div>
+        </section>
+
+        <!-- PRODUK -->
+        <section id="page-produk" class="page">
+            <h1>Produk</h1>
+            <div class="panel">
+                <div class="panel-header">
+                    <strong>Daftar Produk</strong>
+                    <button class="btn" onclick="openProductModal()"><i class="fas fa-plus"></i> Tambah Produk</button>
+                </div>
+                <table>
+                    <thead><tr><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead>
+                    <tbody id="produk-tbody"><tr><td colspan="5" class="empty-msg">Memuat...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- KATEGORI -->
+        <section id="page-kategori" class="page">
+            <h1>Kategori</h1>
+            <div class="panel">
+                <div class="panel-header">
+                    <strong>Daftar Kategori</strong>
+                    <button class="btn" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Tambah Kategori</button>
+                </div>
+                <table>
+                    <thead><tr><th>Nama</th><th>Deskripsi</th><th>Jumlah Produk</th><th>Aksi</th></tr></thead>
+                    <tbody id="kategori-tbody"><tr><td colspan="4" class="empty-msg">Memuat...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ORDER -->
+        <section id="page-order" class="page">
+            <h1>Order</h1>
+            <div class="panel">
+                <div class="panel-header">
+                    <strong>Daftar Order</strong>
+                    <select id="order-filter" onchange="loadOrders()" style="padding:8px 12px;border-radius:8px;border:1px solid #ddd;">
+                        <option value="">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="diproses">Diproses</option>
+                        <option value="dikirim">Dikirim</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
+                </div>
+                <table>
+                    <thead><tr><th>Customer</th><th>Telepon</th><th>Item</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="order-tbody"><tr><td colspan="6" class="empty-msg">Memuat...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PESAN MASUK -->
+        <section id="page-pesan" class="page">
+            <h1>Pesan Masuk</h1>
+            <div class="panel">
+                <div class="panel-header"><strong>Daftar Pesan Kontak</strong></div>
+                <table>
+                    <thead><tr><th>Nama</th><th>Email</th><th>Telepon</th><th>Pesan</th><th>Aksi</th></tr></thead>
+                    <tbody id="pesan-tbody"><tr><td colspan="5" class="empty-msg">Memuat...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ===== MODAL PRODUK ===== -->
+<div class="modal-overlay" id="produk-modal">
+    <div class="modal-box">
+        <h3 id="produk-modal-title">Tambah Produk</h3>
+        <form id="produk-form">
+            <input type="hidden" id="produk-id">
+            <div class="field">
+                <label>Nama Produk</label>
+                <input type="text" id="produk-name" required>
+            </div>
+            <div class="field">
+                <label>Kategori</label>
+                <select id="produk-category" required></select>
+            </div>
+            <div class="field">
+                <label>Deskripsi</label>
+                <textarea id="produk-description" rows="3"></textarea>
+            </div>
+            <div class="field">
+                <label>Harga (Rp)</label>
+                <input type="number" id="produk-price" min="0" required>
+            </div>
+            <div class="field">
+                <label>Stok</label>
+                <input type="number" id="produk-stock" min="0" required>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn" style="background:#ccc;color:#333;" onclick="closeModal('produk-modal')">Batal</button>
+                <button type="submit" class="btn" id="produk-submit-btn">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL KATEGORI ===== -->
+<div class="modal-overlay" id="kategori-modal">
+    <div class="modal-box">
+        <h3 id="kategori-modal-title">Tambah Kategori</h3>
+        <form id="kategori-form">
+            <input type="hidden" id="kategori-id">
+            <div class="field">
+                <label>Nama Kategori</label>
+                <input type="text" id="kategori-name" required>
+            </div>
+            <div class="field">
+                <label>Deskripsi</label>
+                <textarea id="kategori-description" rows="3"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn" style="background:#ccc;color:#333;" onclick="closeModal('kategori-modal')">Batal</button>
+                <button type="submit" class="btn" id="kategori-submit-btn">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="admin-toast"></div>
+
+<script>
+const API_BASE_URL = "http://192.168.1.11:8000/api";
+let authToken = localStorage.getItem("gachifaAdminToken") || null;
+let categoriesCache = [];
+
+/* ===== HELPER ===== */
+function showToast(msg, isError = false) {
+    const el = document.getElementById('admin-toast');
+    el.textContent = msg;
+    el.style.background = isError ? '#c0392b' : '#2C1A14';
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function formatRupiah(n) {
+    return 'Rp ' + Number(n).toLocaleString('id-ID');
+}
+
+async function apiFetch(path, options = {}) {
+    const headers = options.headers || {};
+    headers['Accept'] = 'application/json';
+    if (options.body) headers['Content-Type'] = 'application/json';
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+
+    const res = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+
+    if (res.status === 401) {
+        logoutAdmin();
+        throw new Error('Sesi habis, silakan login lagi.');
+    }
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+        const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Terjadi kesalahan.');
+        throw new Error(firstError);
+    }
+    return data;
+}
+
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+/* ===== LOGIN / LOGOUT ===== */
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('login-submit-btn');
+    const errorEl = document.getElementById('login-error');
+    errorEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Memproses...';
+
+    try {
+        const data = await apiFetch('/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: document.getElementById('login-email').value.trim(),
+                password: document.getElementById('login-password').value,
+            }),
+        });
+
+        if (data.user.role !== 'admin') {
+            throw new Error('Akun ini bukan admin.');
+        }
+
+        authToken = data.token;
+        localStorage.setItem('gachifaAdminToken', authToken);
+        enterAdminApp();
+    } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Masuk';
+    }
+});
+
+function logoutAdmin() {
+    authToken = null;
+    localStorage.removeItem('gachifaAdminToken');
+    document.getElementById('admin-app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+}
+
+function enterAdminApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'flex';
+    loadDashboard();
+    loadCategories();
+    loadProducts();
+    loadOrders();
+    loadContacts();
+}
+
+/* ===== HAMBURGER MENU (MOBILE) ===== */
+function toggleAdminMobileMenu() {
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('mobile-nav-overlay');
+    sidebar.classList.toggle('mobile-show');
+    overlay.classList.toggle('show');
+    document.body.style.overflow = sidebar.classList.contains('mobile-show') ? 'hidden' : '';
+}
+
+function closeAdminMobileMenu() {
+    document.getElementById('admin-sidebar').classList.remove('mobile-show');
+    document.getElementById('mobile-nav-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+/* ===== NAVIGASI ===== */
+function showPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+    closeAdminMobileMenu();
+}
+
+/* ===== DASHBOARD ===== */
+async function loadDashboard() {
+    try {
+        const data = await apiFetch('/dashboard');
+        const grid = document.getElementById('stat-grid');
+        grid.innerHTML = `
+            <div class="stat-card"><div class="num">${data.total_products}</div><div class="label">Total Produk</div></div>
+            <div class="stat-card"><div class="num">${data.total_orders}</div><div class="label">Total Order</div></div>
+            <div class="stat-card"><div class="num">${data.total_customers}</div><div class="label">Total Customer</div></div>
+            <div class="stat-card"><div class="num">${data.total_contacts}</div><div class="label">Pesan Masuk</div></div>
+            <div class="stat-card"><div class="num">${data.orders_pending}</div><div class="label">Order Pending</div></div>
+            <div class="stat-card"><div class="num">${data.orders_selesai}</div><div class="label">Order Selesai</div></div>
+        `;
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+/* ===== PRODUK ===== */
+async function loadProducts() {
+    const tbody = document.getElementById('produk-tbody');
+    try {
+        const products = await apiFetch('/products');
+        if (!products.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada produk.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = products.map(p => `
+            <tr>
+                <td>${p.name}</td>
+                <td>${p.category ? p.category.name : '-'}</td>
+                <td>${formatRupiah(p.price)}</td>
+                <td>${p.stock}</td>
+                <td class="table-actions">
+                    <button class="btn small" onclick='openProductModal(${JSON.stringify(p)})'>Edit</button>
+                    <button class="btn small danger" onclick="deleteProduct(${p.id})">Hapus</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">${err.message}</td></tr>`;
+    }
+}
+
+function openProductModal(product = null) {
+    const catSelect = document.getElementById('produk-category');
+    catSelect.innerHTML = categoriesCache.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+    document.getElementById('produk-modal-title').textContent = product ? 'Edit Produk' : 'Tambah Produk';
+    document.getElementById('produk-id').value = product ? product.id : '';
+    document.getElementById('produk-name').value = product ? product.name : '';
+    document.getElementById('produk-description').value = product ? (product.description || '') : '';
+    document.getElementById('produk-price').value = product ? product.price : '';
+    document.getElementById('produk-stock').value = product ? product.stock : '';
+    if (product) catSelect.value = product.category_id;
+
+    openModal('produk-modal');
+}
+
+document.getElementById('produk-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('produk-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan...';
+
+    const id = document.getElementById('produk-id').value;
+    const payload = {
+        category_id: Number(document.getElementById('produk-category').value),
+        name: document.getElementById('produk-name').value.trim(),
+        description: document.getElementById('produk-description').value.trim(),
+        price: Number(document.getElementById('produk-price').value),
+        stock: Number(document.getElementById('produk-stock').value),
+    };
+
+    try {
+        if (id) {
+            await apiFetch(`/products/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Produk berhasil diperbarui.');
+        } else {
+            await apiFetch('/products', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Produk berhasil ditambahkan.');
+        }
+        closeModal('produk-modal');
+        loadProducts();
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan';
+    }
+});
+
+async function deleteProduct(id) {
+    if (!confirm('Hapus produk ini?')) return;
+    try {
+        await apiFetch(`/products/${id}`, { method: 'DELETE' });
+        showToast('Produk dihapus.');
+        loadProducts();
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+/* ===== KATEGORI ===== */
+async function loadCategories() {
+    const tbody = document.getElementById('kategori-tbody');
+    try {
+        const categories = await apiFetch('/categories');
+        categoriesCache = categories;
+        if (!categories.length) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">Belum ada kategori.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = categories.map(c => `
+            <tr>
+                <td>${c.name}</td>
+                <td>${c.description || '-'}</td>
+                <td>${c.products_count ?? 0}</td>
+                <td class="table-actions">
+                    <button class="btn small" onclick='openCategoryModal(${JSON.stringify(c)})'>Edit</button>
+                    <button class="btn small danger" onclick="deleteCategory(${c.id})">Hapus</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-msg">${err.message}</td></tr>`;
+    }
+}
+
+function openCategoryModal(category = null) {
+    document.getElementById('kategori-modal-title').textContent = category ? 'Edit Kategori' : 'Tambah Kategori';
+    document.getElementById('kategori-id').value = category ? category.id : '';
+    document.getElementById('kategori-name').value = category ? category.name : '';
+    document.getElementById('kategori-description').value = category ? (category.description || '') : '';
+    openModal('kategori-modal');
+}
+
+document.getElementById('kategori-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('kategori-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan...';
+
+    const id = document.getElementById('kategori-id').value;
+    const payload = {
+        name: document.getElementById('kategori-name').value.trim(),
+        description: document.getElementById('kategori-description').value.trim(),
+    };
+
+    try {
+        if (id) {
+            await apiFetch(`/categories/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Kategori berhasil diperbarui.');
+        } else {
+            await apiFetch('/categories', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Kategori berhasil ditambahkan.');
+        }
+        closeModal('kategori-modal');
+        loadCategories();
+    } catch (err) {
+        showToast(err.message, true);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan';
+    }
+});
+
+async function deleteCategory(id) {
+    if (!confirm('Hapus kategori ini? Produk di dalamnya juga akan ikut terhapus.')) return;
+    try {
+        await apiFetch(`/categories/${id}`, { method: 'DELETE' });
+        showToast('Kategori dihapus.');
+        loadCategories();
+        loadProducts();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+/* ===== ORDER ===== */
+async function loadOrders() {
+    const tbody = document.getElementById('order-tbody');
+    const status = document.getElementById('order-filter').value;
+    try {
+        const orders = await apiFetch(`/orders${status ? '?status=' + status : ''}`);
+        if (!orders.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">Belum ada order.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = orders.map(o => {
+            const items = o.items.map(it => `${it.product ? it.product.name : '-'} x${it.qty}`).join(', ');
+            return `
+                <tr>
+                    <td>${o.customer_name}</td>
+                    <td>${o.customer_phone}</td>
+                    <td>${items}</td>
+                    <td>${formatRupiah(o.total_price)}</td>
+                    <td><span class="badge-status status-${o.status}">${o.status}</span></td>
+                    <td class="table-actions">
+                        <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding:5px 8px;border-radius:6px;border:1px solid #ddd;">
+                            <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="diproses" ${o.status === 'diproses' ? 'selected' : ''}>Diproses</option>
+                            <option value="dikirim" ${o.status === 'dikirim' ? 'selected' : ''}>Dikirim</option>
+                            <option value="selesai" ${o.status === 'selesai' ? 'selected' : ''}>Selesai</option>
+                        </select>
+                        <button class="btn small danger" onclick="deleteOrder(${o.id})">Hapus</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-msg">${err.message}</td></tr>`;
+    }
+}
+
+async function updateOrderStatus(id, status) {
+    try {
+        await apiFetch(`/orders/${id}`, { method: 'PUT', body: JSON.stringify({ status }) });
+        showToast('Status order diperbarui.');
+        loadOrders();
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+        loadOrders();
+    }
+}
+
+async function deleteOrder(id) {
+    if (!confirm('Hapus order ini?')) return;
+    try {
+        await apiFetch(`/orders/${id}`, { method: 'DELETE' });
+        showToast('Order dihapus.');
+        loadOrders();
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+/* ===== PESAN MASUK ===== */
+async function loadContacts() {
+    const tbody = document.getElementById('pesan-tbody');
+    try {
+        const contacts = await apiFetch('/contact');
+        if (!contacts.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada pesan masuk.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = contacts.map(c => `
+            <tr>
+                <td>${c.name}</td>
+                <td>${c.email}</td>
+                <td>${c.phone || '-'}</td>
+                <td>${c.message}</td>
+                <td class="table-actions">
+                    <button class="btn small danger" onclick="deleteContact(${c.id})">Hapus</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">${err.message}</td></tr>`;
+    }
+}
+
+async function deleteContact(id) {
+    if (!confirm('Hapus pesan ini?')) return;
+    try {
+        await apiFetch(`/contact/${id}`, { method: 'DELETE' });
+        showToast('Pesan dihapus.');
+        loadContacts();
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+/* ===== INIT ===== */
+if (authToken) {
+    enterAdminApp();
+}
+</script>
+</body>
+</html>
