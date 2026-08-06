@@ -330,16 +330,8 @@ function clearSearch() {
 
 /* ===== AMBIL PRODUK DARI API (backend Laravel) ===== */
 
-// Info tambahan per produk yang belum tersimpan di database
-// (gambar lokal, satuan, qty minimal order, badge)
-const PRODUCT_EXTRA = {
-    'Roti Tawar Gandum': { image: 'images/roti-tawar-gandum.jpeg', satuan: '', qty: 1, badge: 'BEST SELLER' },
-    'Roti Tawar':        { image: 'images/roti-tawar.jpeg', satuan: '', qty: 1 },
-    'Roti Tawar Cokelat':{ image: 'images/tawar-cokelat.jpeg', satuan: '', qty: 1 },
-    'Burger Bun':        { image: 'images/burger-bun.jpeg', satuan: 'pcs', qty: 10, badge: 'MIN ORDER' },
-    'Burger Mini':       { image: 'images/burger-mini.jpeg', satuan: 'pcs', qty: 20, badge: 'MIN ORDER' },
-    'Hot Dog Mini':      { image: 'images/hot-dog-mini.jpeg', satuan: 'pcs', qty: 20, badge: 'MIN ORDER' },
-};
+// Gambar default kalau produk belum punya foto di database
+const FALLBACK_IMAGE = 'images/logo.png';
 
 function kategoriKeSlug(namaKategori) {
     if (!namaKategori) return 'all';
@@ -350,21 +342,20 @@ function kategoriKeSlug(namaKategori) {
 }
 
 function buatKartuProduk(product) {
-    const extra = PRODUCT_EXTRA[product.name] || { image: 'images/logo.png', satuan: '', qty: 1 };
     const slug = kategoriKeSlug(product.category ? product.category.name : '');
     const harga = Number(product.price);
-    const hargaLabel = extra.satuan
-        ? `Rp ${harga.toLocaleString('id-ID')} / ${extra.satuan}`
-        : `Rp ${harga.toLocaleString('id-ID')}`;
-    const gambar = product.image ? product.image : extra.image;
+    const hargaLabel = `Rp ${harga.toLocaleString('id-ID')}`;
+    const gambar = product.image_url || FALLBACK_IMAGE;
 
-    const badgeHtml = extra.badge
-        ? `<span class="badge ${extra.badge === 'MIN ORDER' ? 'badge-new' : ''}">${extra.badge}</span>`
+    // Badge & isi/min-order sekarang datang langsung dari database (diisi lewat admin),
+    // bukan hardcode lagi.
+    const badgeHtml = product.badge_label
+        ? `<span class="badge ${product.badge_label === 'MIN ORDER' ? 'badge-new' : ''}">${product.badge_label}</span>`
         : '';
 
-    const minOrderHtml = extra.qty > 1
-        ? `<p class="min-order">⚠️ Min Order: ${extra.qty} ${extra.satuan} / 1 Pax</p>`
-        : (product.description && product.description.includes('slice') ? `<p class="min-order">📦 Isi 28 slice</p>` : '');
+    const minOrderHtml = product.min_order_text
+        ? `<p class="min-order">⚠️ ${product.min_order_text}</p>`
+        : (product.isi_text ? `<p class="min-order">📦 ${product.isi_text}</p>` : '');
 
     return `
         <div class="card reveal-child" data-category="${slug}" data-name="${product.name.toLowerCase()}">
@@ -372,10 +363,10 @@ function buatKartuProduk(product) {
             <img src="${gambar}" alt="${product.name}">
             <div class="card-body">
                 <h3>${product.name}</h3>
-                <p>${(product.description || '').split('. Min Order')[0].split('. Isi')[0]}</p>
+                <p>${product.description || ''}</p>
                 ${minOrderHtml}
                 <div class="price">${hargaLabel}</div>
-                <button class="btn-buy" onclick="beliRoti('${product.name}', ${harga}, ${extra.qty}, '${extra.satuan}', ${product.id})">Beli Sekarang</button>
+                <button class="btn-buy" onclick="beliRoti('${product.name}', ${harga}, 1, '', ${product.id})">Beli Sekarang</button>
             </div>
         </div>
     `;
