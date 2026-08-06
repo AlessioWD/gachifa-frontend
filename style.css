@@ -1474,8 +1474,8 @@ footer h3 .brand-coklat {
         right: 0;
         height: 100vh;
         height: 100dvh;
-        width: 60%;
-        max-width: 235px;
+        width: 68%;
+        max-width: 260px;
         flex-direction: column;
         gap: 0;
         background: var(--white);
@@ -1484,7 +1484,7 @@ footer h3 .brand-coklat {
         padding-bottom: env(safe-area-inset-bottom);
         margin: 0;
         z-index: 1500;
-        border-radius: 18px 0 0 18px;
+        border-radius: 22px 0 0 22px;
         overflow-y: auto;
         overflow-x: hidden;
         transform: translateX(100%);
@@ -1500,7 +1500,8 @@ footer h3 .brand-coklat {
     }
 
     .nav-links li:not(.nav-close-item) {
-        border-bottom: 1px solid var(--cream);
+        border-bottom: none;
+        padding: 0 12px;
     }
 
     .nav-links li:last-child {
@@ -1512,54 +1513,102 @@ footer h3 .brand-coklat {
         align-items: center;
         justify-content: space-between;
         width: 100% !important;
-        padding: 16px 18px;
-        background: var(--cream);
+        padding: 26px 20px 22px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 22px 0 0 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-close-item::after {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+        top: -30px;
+        right: -20px;
     }
 
     .nav-panel-title {
         font-family: 'Fredoka', sans-serif;
         font-weight: 600;
-        color: var(--primary);
-        font-size: 1rem;
+        color: var(--white);
+        font-size: 1.05rem;
         letter-spacing: 0.2px;
+        position: relative;
+        z-index: 1;
     }
 
     .nav-close-btn {
-        background: none;
+        background: rgba(255,255,255,0.18);
         border: none;
-        font-size: 1.4rem;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        font-size: 1.2rem;
         line-height: 1;
-        color: #888;
+        color: var(--white);
         cursor: pointer;
-        padding: 0 2px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
     }
 
     .nav-close-btn:hover {
-        color: var(--primary);
+        background: rgba(255,255,255,0.32);
+        color: var(--white);
+    }
+
+    .nav-links nav ul,
+    .nav-links {
+        padding-top: 0;
     }
 
     .nav-links a {
         display: flex;
         align-items: center;
         width: 100%;
-        padding: 13px 18px;
+        margin: 6px 0;
+        padding: 12px 14px;
         font-size: 0.9rem !important;
         color: var(--dark);
-        border-radius: 0;
+        border-radius: 14px;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .nav-links a:active {
+        transform: scale(0.98);
     }
 
     .nav-icon {
-        display: inline-block !important;
-        width: 18px;
-        margin-right: 10px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        margin-right: 12px;
         text-align: center;
         color: var(--primary);
-        font-size: 0.85rem;
+        background: var(--kuningMuda);
+        border-radius: 10px;
+        font-size: 0.8rem;
+        flex-shrink: 0;
     }
 
     .nav-links a.active {
-        color: var(--primary);
-        background: var(--kuningMuda);
+        color: var(--white);
+        background: linear-gradient(135deg, var(--primary), var(--kuning));
+        box-shadow: 0 6px 14px rgba(139, 94, 60, 0.3);
+    }
+
+    .nav-links a.active .nav-icon {
+        background: rgba(255,255,255,0.25);
+        color: var(--white);
     }
 
     .nav-links a::after {
