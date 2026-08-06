@@ -46,7 +46,7 @@ function updateAccountNav() {
 
 function getKeranjang() {
     try {
-        const data = localStorage.getItem(CART_KEY);
+        const data = sessionStorage.getItem(CART_KEY);
         return data ? JSON.parse(data) : [];
     } catch (e) {
         return [];
@@ -54,7 +54,7 @@ function getKeranjang() {
 }
 
 function saveKeranjang(keranjang) {
-    localStorage.setItem(CART_KEY, JSON.stringify(keranjang));
+    sessionStorage.setItem(CART_KEY, JSON.stringify(keranjang));
 }
 
 function beliRoti(namaRoti, hargaSatuan, qty = 1, satuan = '', productId = null) {
