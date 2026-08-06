@@ -1729,10 +1729,10 @@ footer h3 .brand-coklat {
     }
 
     .min-order {
-        font-size: 0.62rem !important;
-        padding: 3px 9px;
+        font-size: 0.58rem !important;
+        padding: 3px 7px;
         margin-bottom: 8px;
-        gap: 4px;
+        gap: 3px;
     }
 
     .price {
