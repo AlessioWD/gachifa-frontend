@@ -372,7 +372,7 @@ function buatKartuProduk(product) {
 
     const minOrderHtml = product.min_order_text
         ? `<p class="min-order">⚠️ ${product.min_order_text}</p>`
-        : (product.isi_text ? `<p class="min-order">📦 ${product.isi_text}</p>` : '');
+        : (product.isi_text ? `<p class="min-order">📦 ${product.isi_text}</p>` : '<p class="min-order min-order-empty">&nbsp;</p>');
 
     // Qty yang otomatis masuk ke keranjang saat "Beli Sekarang" diklik.
     // Ambil dari min_order_qty (angka di database); kalau kosong/0, default 1.
