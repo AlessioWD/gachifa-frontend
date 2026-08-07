@@ -300,6 +300,8 @@ function setActiveNavByPage() {
 }
 
 let activeCategory = 'all';
+let visibleLimit = 8;
+const LOAD_STEP = 8;
 
 function setCategory(cat, btnEl) {
     activeCategory = cat;
@@ -308,7 +310,9 @@ function setCategory(cat, btnEl) {
     filterMenu();
 }
 
-function filterMenu() {
+function filterMenu(resetPaging = true) {
+    if (resetPaging) visibleLimit = 8;
+
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('searchClearBtn');
     const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
@@ -316,24 +320,44 @@ function filterMenu() {
     if (clearBtn) clearBtn.style.display = searchTerm !== '' ? 'flex' : 'none';
 
     const cards = document.querySelectorAll('.product-grid .card');
-    let visibleCount = 0;
+    const isFiltering = searchTerm !== '' || activeCategory !== 'all';
+    let matchedCount = 0;
+    let shownCount = 0;
 
     cards.forEach(card => {
         const cat = card.dataset.category || '';
         const name = card.dataset.name || '';
         const matchCategory = activeCategory === 'all' || cat === activeCategory;
         const matchSearch = searchTerm === '' || name.includes(searchTerm);
+        const isMatch = matchCategory && matchSearch;
 
-        if (matchCategory && matchSearch) {
+        if (!isMatch) {
+            card.style.display = 'none';
+            return;
+        }
+
+        matchedCount++;
+
+        if (isFiltering || matchedCount <= visibleLimit) {
             card.style.display = '';
-            visibleCount++;
+            shownCount++;
         } else {
             card.style.display = 'none';
         }
     });
 
     const noResults = document.getElementById('no-results');
-    if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    if (noResults) noResults.style.display = matchedCount === 0 ? 'block' : 'none';
+
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = (!isFiltering && matchedCount > shownCount) ? 'inline-flex' : 'none';
+    }
+}
+
+function loadMoreProducts() {
+    visibleLimit += LOAD_STEP;
+    filterMenu(false);
 }
 
 function clearSearch() {
