@@ -491,7 +491,38 @@
 
 <script>
 const API_BASE_URL = "http://192.168.1.11:8000/api";
-let authToken = localStorage.getItem("gachifaAdminToken") || null;
+
+// Dibungkus try/catch: kalau browser memblokir localStorage, ini tidak boleh
+// menghentikan eksekusi script (yang berisi semua fungsi panel admin, termasuk
+// tombol login) — cukup anggap belum ada token tersimpan.
+function getAdminToken() {
+    try {
+        return localStorage.getItem("gachifaAdminToken") || null;
+    } catch (e) {
+        console.error('localStorage tidak bisa diakses:', e);
+        return null;
+    }
+}
+
+function saveAdminToken(token) {
+    try {
+        localStorage.setItem('gachifaAdminToken', token);
+        return true;
+    } catch (e) {
+        console.error('Gagal menyimpan sesi admin (localStorage diblokir):', e);
+        return false;
+    }
+}
+
+function clearAdminToken() {
+    try {
+        localStorage.removeItem('gachifaAdminToken');
+    } catch (e) {
+        console.error('localStorage tidak bisa diakses:', e);
+    }
+}
+
+let authToken = getAdminToken();
 let categoriesCache = [];
 
 /* ===== HELPER ===== */
@@ -554,7 +585,11 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         }
 
         authToken = data.token;
-        localStorage.setItem('gachifaAdminToken', authToken);
+        if (!saveAdminToken(authToken)) {
+            errorEl.textContent = 'Login berhasil, tapi browser ini memblokir penyimpanan data lokal sehingga sesi tidak bisa disimpan. Coba matikan mode privasi/blokir cookie situs.';
+            errorEl.style.display = 'block';
+            return;
+        }
         enterAdminApp();
     } catch (err) {
         errorEl.textContent = err.message;
@@ -567,7 +602,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
 function logoutAdmin() {
     authToken = null;
-    localStorage.removeItem('gachifaAdminToken');
+    clearAdminToken();
     document.getElementById('admin-app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
 }

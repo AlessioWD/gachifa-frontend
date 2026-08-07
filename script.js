@@ -12,7 +12,12 @@ window.scrollTo(0, 0);
 window.addEventListener('load', () => window.scrollTo(0, 0));
 
 function getCustomerToken() {
-    return localStorage.getItem(CUSTOMER_TOKEN_KEY);
+    try {
+        return localStorage.getItem(CUSTOMER_TOKEN_KEY);
+    } catch (e) {
+        console.error('localStorage tidak bisa diakses:', e);
+        return null;
+    }
 }
 
 function getCustomerUser() {
@@ -24,14 +29,26 @@ function getCustomerUser() {
     }
 }
 
+// Mengembalikan true kalau berhasil disimpan, false kalau gagal (misal browser
+// memblokir localStorage). Dipakai supaya pemanggil bisa kasih tahu user.
 function saveCustomerAuth(token, user) {
-    localStorage.setItem(CUSTOMER_TOKEN_KEY, token);
-    localStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
+    try {
+        localStorage.setItem(CUSTOMER_TOKEN_KEY, token);
+        localStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
+        return true;
+    } catch (e) {
+        console.error('Gagal menyimpan sesi login (localStorage diblokir):', e);
+        return false;
+    }
 }
 
 function logoutCustomer() {
-    localStorage.removeItem(CUSTOMER_TOKEN_KEY);
-    localStorage.removeItem(CUSTOMER_USER_KEY);
+    try {
+        localStorage.removeItem(CUSTOMER_TOKEN_KEY);
+        localStorage.removeItem(CUSTOMER_USER_KEY);
+    } catch (e) {
+        console.error('localStorage tidak bisa diakses:', e);
+    }
 }
 
 function updateAccountNav() {

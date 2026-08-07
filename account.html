@@ -153,9 +153,15 @@
         document.getElementById('register-form').classList.toggle('active', tab === 'register');
     }
 
-    // Kalau sudah login, langsung arahkan ke profil
-    if (getCustomerToken()) {
-        window.location.href = 'profile.html';
+    // Kalau sudah login, langsung arahkan ke profil.
+    // Dibungkus try/catch supaya kalau browser memblokir localStorage,
+    // ini tidak menghentikan script di bawahnya (termasuk tombol Masuk/Daftar).
+    try {
+        if (getCustomerToken()) {
+            window.location.href = 'profile.html';
+        }
+    } catch (e) {
+        console.error('Gagal mengecek status login:', e);
     }
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -180,7 +186,13 @@
                 const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Email atau password salah.');
                 throw new Error(firstError);
             }
-            saveCustomerAuth(data.token, data.user);
+            const tersimpan = saveCustomerAuth(data.token, data.user);
+            if (!tersimpan) {
+                statusEl.textContent = 'Login berhasil, tapi browser ini memblokir penyimpanan data lokal sehingga sesi tidak bisa disimpan. Coba matikan mode privasi/blokir cookie situs, lalu login lagi.';
+                statusEl.className = 'auth-form-status contact-form-error';
+                statusEl.style.display = 'block';
+                return;
+            }
             window.location.href = 'profile.html';
         } catch (err) {
             statusEl.textContent = err.message;
@@ -227,7 +239,13 @@
                 const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Gagal mendaftar.');
                 throw new Error(firstError);
             }
-            saveCustomerAuth(data.token, data.user);
+            const tersimpan = saveCustomerAuth(data.token, data.user);
+            if (!tersimpan) {
+                statusEl.textContent = 'Pendaftaran berhasil, tapi browser ini memblokir penyimpanan data lokal sehingga sesi tidak bisa disimpan. Coba matikan mode privasi/blokir cookie situs, lalu login lagi.';
+                statusEl.className = 'auth-form-status contact-form-error';
+                statusEl.style.display = 'block';
+                return;
+            }
             window.location.href = 'profile.html';
         } catch (err) {
             statusEl.textContent = err.message;
