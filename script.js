@@ -351,13 +351,34 @@ function filterMenu(resetPaging = true) {
 
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) {
-        loadMoreBtn.style.display = (!isFiltering && matchedCount > shownCount) ? 'inline-flex' : 'none';
+        if (isFiltering || matchedCount <= 8) {
+            // Tidak sedang filter/search dan produk sedikit -> sembunyikan tombol
+            loadMoreBtn.style.display = 'none';
+        } else if (matchedCount > shownCount) {
+            // Masih ada produk yang belum ditampilkan
+            loadMoreBtn.style.display = 'inline-flex';
+            loadMoreBtn.textContent = 'Muat Lebih Banyak';
+        } else {
+            // Semua produk sudah tampil -> beri opsi untuk mengecilkan lagi
+            loadMoreBtn.style.display = 'inline-flex';
+            loadMoreBtn.textContent = 'Tampilkan Lebih Sedikit';
+        }
     }
 }
 
-function loadMoreProducts() {
-    visibleLimit += LOAD_STEP;
-    filterMenu(false);
+function toggleLoadMore() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const isShowingLess = loadMoreBtn && loadMoreBtn.textContent.trim() === 'Tampilkan Lebih Sedikit';
+
+    if (isShowingLess) {
+        visibleLimit = 8;
+        filterMenu(false);
+        const grid = document.getElementById('product-grid');
+        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        visibleLimit += LOAD_STEP;
+        filterMenu(false);
+    }
 }
 
 function clearSearch() {
