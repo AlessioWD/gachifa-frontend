@@ -88,7 +88,10 @@
         </div>
         <div class="form-group">
             <label for="login-password">Password</label>
-            <input type="password" id="login-password" required placeholder="Password">
+            <div class="password-wrapper">
+                <input type="password" id="login-password" required placeholder="Password">
+                <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">🍞</button>
+            </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="login-btn">Masuk</button>
         <p id="login-status" class="auth-form-status"></p>
@@ -106,11 +109,17 @@
         </div>
         <div class="form-group">
             <label for="register-password">Password</label>
-            <input type="password" id="register-password" required minlength="6" placeholder="Minimal 6 karakter">
+            <div class="password-wrapper">
+                <input type="password" id="register-password" required minlength="6" placeholder="Minimal 6 karakter">
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)">🍞</button>
+            </div>
         </div>
         <div class="form-group">
             <label for="register-password-confirm">Konfirmasi Password</label>
-            <input type="password" id="register-password-confirm" required minlength="6" placeholder="Ulangi password">
+            <div class="password-wrapper">
+                <input type="password" id="register-password-confirm" required minlength="6" placeholder="Ulangi password">
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm', this)">🍞</button>
+            </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="register-btn">Daftar</button>
         <p id="register-status" class="auth-form-status"></p>
@@ -151,6 +160,14 @@
         document.getElementById('tab-register').classList.toggle('active', tab === 'register');
         document.getElementById('login-form').classList.toggle('active', tab === 'login');
         document.getElementById('register-form').classList.toggle('active', tab === 'register');
+    }
+
+    // Toggle tampil/sembunyikan password saat diklik ikon roti
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        btn.textContent = isHidden ? '🥐' : '🍞';
     }
 
     // Kalau sudah login, langsung arahkan ke profil.
