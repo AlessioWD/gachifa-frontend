@@ -90,7 +90,7 @@
             <label for="login-password">Password</label>
             <div class="password-wrapper">
                 <input type="password" id="login-password" required placeholder="Password">
-                <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">Lihat</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)"></button>
             </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="login-btn">Masuk</button>
@@ -111,14 +111,14 @@
             <label for="register-password">Password</label>
             <div class="password-wrapper">
                 <input type="password" id="register-password" required minlength="6" placeholder="Minimal 6 karakter">
-                <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)">Lihat</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)"></button>
             </div>
         </div>
         <div class="form-group">
             <label for="register-password-confirm">Konfirmasi Password</label>
             <div class="password-wrapper">
                 <input type="password" id="register-password-confirm" required minlength="6" placeholder="Ulangi password">
-                <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm', this)">Lihat</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm', this)"></button>
             </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="register-btn">Daftar</button>
@@ -162,13 +162,21 @@
         document.getElementById('register-form').classList.toggle('active', tab === 'register');
     }
 
-    // Toggle tampil/sembunyikan password saat diklik
+    // Ikon mata (SVG) untuk toggle tampil/sembunyikan password
+    const eyeIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+    const eyeOffIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.62 21.62 0 0 1 5.06-6.06"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-3.22 4.44"></path><path d="M1 1l22 22"></path><path d="M9.53 9.53a3 3 0 0 0 4.24 4.24"></path></svg>';
+
     function togglePassword(inputId, btn) {
         const input = document.getElementById(inputId);
         const isHidden = input.type === 'password';
         input.type = isHidden ? 'text' : 'password';
-        btn.textContent = isHidden ? 'Sembunyi' : 'Lihat';
+        btn.innerHTML = isHidden ? eyeOffIcon : eyeIcon;
     }
+
+    // Pasang ikon mata awal (tersembunyi) ke semua tombol toggle saat halaman dimuat
+    document.querySelectorAll('.toggle-password').forEach(function (btn) {
+        btn.innerHTML = eyeIcon;
+    });
 
     // Kalau sudah login, langsung arahkan ke profil.
     // Dibungkus try/catch supaya kalau browser memblokir localStorage,
