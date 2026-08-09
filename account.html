@@ -90,7 +90,7 @@
             <label for="login-password">Password</label>
             <div class="password-wrapper">
                 <input type="password" id="login-password" required placeholder="Password">
-                <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">🍞</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">Lihat</button>
             </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="login-btn">Masuk</button>
@@ -111,14 +111,14 @@
             <label for="register-password">Password</label>
             <div class="password-wrapper">
                 <input type="password" id="register-password" required minlength="6" placeholder="Minimal 6 karakter">
-                <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)">🍞</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)">Lihat</button>
             </div>
         </div>
         <div class="form-group">
             <label for="register-password-confirm">Konfirmasi Password</label>
             <div class="password-wrapper">
                 <input type="password" id="register-password-confirm" required minlength="6" placeholder="Ulangi password">
-                <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm', this)">🍞</button>
+                <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm', this)">Lihat</button>
             </div>
         </div>
         <button type="submit" class="btn" style="width:100%;" id="register-btn">Daftar</button>
@@ -162,12 +162,12 @@
         document.getElementById('register-form').classList.toggle('active', tab === 'register');
     }
 
-    // Toggle tampil/sembunyikan password saat diklik ikon roti
+    // Toggle tampil/sembunyikan password saat diklik
     function togglePassword(inputId, btn) {
         const input = document.getElementById(inputId);
         const isHidden = input.type === 'password';
         input.type = isHidden ? 'text' : 'password';
-        btn.textContent = isHidden ? '🥐' : '🍞';
+        btn.textContent = isHidden ? 'Sembunyi' : 'Lihat';
     }
 
     // Kalau sudah login, langsung arahkan ke profil.
