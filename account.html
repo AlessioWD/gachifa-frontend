@@ -173,9 +173,9 @@
         btn.innerHTML = isHidden ? eyeIcon : eyeOffIcon;
     }
 
-    // Pasang ikon mata awal (tersembunyi) ke semua tombol toggle saat halaman dimuat
+    // Pasang ikon mata awal (tersembunyi = mata coret) ke semua tombol toggle saat halaman dimuat
     document.querySelectorAll('.toggle-password').forEach(function (btn) {
-        btn.innerHTML = eyeIcon;
+        btn.innerHTML = eyeOffIcon;
     });
 
     // Kalau sudah login, langsung arahkan ke profil.
