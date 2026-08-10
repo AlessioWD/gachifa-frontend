@@ -433,8 +433,8 @@ function buatKartuProduk(product) {
         : '';
 
     const minOrderHtml = product.min_order_text
-        ? `<p class="min-order">⚠️ ${product.min_order_text}</p>`
-        : (product.isi_text ? `<p class="min-order">📦 ${product.isi_text}</p>` : '<p class="min-order min-order-empty">&nbsp;</p>');
+        ? `<div class="min-order-wrap"><p class="min-order">⚠️ ${product.min_order_text}</p></div>`
+        : (product.isi_text ? `<div class="min-order-wrap"><p class="min-order">📦 ${product.isi_text}</p></div>` : '<div class="min-order-wrap"><p class="min-order min-order-empty">&nbsp;</p></div>');
 
     // Qty yang otomatis masuk ke keranjang saat "Beli Sekarang" diklik.
     // Ambil dari min_order_qty (angka di database); kalau kosong/0, default 1.
