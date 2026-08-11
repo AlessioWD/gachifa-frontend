@@ -11,43 +11,84 @@ if ('scrollRestoration' in history) {
 window.scrollTo(0, 0);
 window.addEventListener('load', () => window.scrollTo(0, 0));
 
+// Beberapa browser (termasuk Samsung Internet dengan mode privasi/anti-tracking
+// aktif) memblokir localStorage. Supaya pelanggan tetap bisa login & belanja di
+// browser seperti itu, dipakai bertingkat: localStorage -> sessionStorage ->
+// variabel di memori (hilang kalau tab ditutup, tapi minimal tetap bisa dipakai
+// selama tab masih terbuka).
+let inMemoryCustomerToken = null;
+let inMemoryCustomerUser = null;
+
 function getCustomerToken() {
     try {
-        return localStorage.getItem(CUSTOMER_TOKEN_KEY);
+        const fromLocal = localStorage.getItem(CUSTOMER_TOKEN_KEY);
+        if (fromLocal) return fromLocal;
     } catch (e) {
         console.error('localStorage tidak bisa diakses:', e);
-        return null;
     }
+    try {
+        const fromSession = sessionStorage.getItem(CUSTOMER_TOKEN_KEY);
+        if (fromSession) return fromSession;
+    } catch (e) {
+        console.error('sessionStorage tidak bisa diakses:', e);
+    }
+    return inMemoryCustomerToken;
 }
 
 function getCustomerUser() {
     try {
         const data = localStorage.getItem(CUSTOMER_USER_KEY);
-        return data ? JSON.parse(data) : null;
+        if (data) return JSON.parse(data);
     } catch (e) {
-        return null;
+        console.error('localStorage tidak bisa diakses:', e);
     }
+    try {
+        const data = sessionStorage.getItem(CUSTOMER_USER_KEY);
+        if (data) return JSON.parse(data);
+    } catch (e) {
+        console.error('sessionStorage tidak bisa diakses:', e);
+    }
+    return inMemoryCustomerUser;
 }
 
-// Mengembalikan true kalau berhasil disimpan, false kalau gagal (misal browser
-// memblokir localStorage). Dipakai supaya pemanggil bisa kasih tahu user.
+// Mengembalikan true kalau berhasil disimpan permanen (localStorage/sessionStorage),
+// false kalau browser blokir keduanya (tapi login tetap dilanjutkan pakai memori,
+// supaya pelanggan tidak macet gara-gara ini).
 function saveCustomerAuth(token, user) {
+    inMemoryCustomerToken = token;
+    inMemoryCustomerUser = user;
+    let saved = false;
     try {
         localStorage.setItem(CUSTOMER_TOKEN_KEY, token);
         localStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
-        return true;
+        saved = true;
     } catch (e) {
-        console.error('Gagal menyimpan sesi login (localStorage diblokir):', e);
-        return false;
+        console.error('Gagal menyimpan sesi login ke localStorage (mungkin diblokir):', e);
     }
+    try {
+        sessionStorage.setItem(CUSTOMER_TOKEN_KEY, token);
+        sessionStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(user));
+        saved = true;
+    } catch (e) {
+        console.error('Gagal menyimpan sesi login ke sessionStorage (mungkin diblokir):', e);
+    }
+    return saved;
 }
 
 function logoutCustomer() {
+    inMemoryCustomerToken = null;
+    inMemoryCustomerUser = null;
     try {
         localStorage.removeItem(CUSTOMER_TOKEN_KEY);
         localStorage.removeItem(CUSTOMER_USER_KEY);
     } catch (e) {
         console.error('localStorage tidak bisa diakses:', e);
+    }
+    try {
+        sessionStorage.removeItem(CUSTOMER_TOKEN_KEY);
+        sessionStorage.removeItem(CUSTOMER_USER_KEY);
+    } catch (e) {
+        console.error('sessionStorage tidak bisa diakses:', e);
     }
 }
 
@@ -68,17 +109,27 @@ function updateAccountNav() {
     }
 }
 
+// Keranjang di memori sebagai cadangan kalau sessionStorage diblokir, supaya
+// tombol "Beli" tidak error total dan keranjang tetap jalan selama tab dibuka.
+let inMemoryKeranjang = [];
+
 function getKeranjang() {
     try {
         const data = sessionStorage.getItem(CART_KEY);
-        return data ? JSON.parse(data) : [];
+        if (data) return JSON.parse(data);
     } catch (e) {
-        return [];
+        console.error('sessionStorage tidak bisa diakses, pakai keranjang di memori:', e);
     }
+    return inMemoryKeranjang;
 }
 
 function saveKeranjang(keranjang) {
-    sessionStorage.setItem(CART_KEY, JSON.stringify(keranjang));
+    inMemoryKeranjang = keranjang;
+    try {
+        sessionStorage.setItem(CART_KEY, JSON.stringify(keranjang));
+    } catch (e) {
+        console.error('Gagal menyimpan keranjang ke sessionStorage (mungkin diblokir):', e);
+    }
 }
 
 function beliRoti(namaRoti, hargaSatuan, qty = 1, satuan = '', productId = null) {

@@ -213,10 +213,7 @@
             }
             const tersimpan = saveCustomerAuth(data.token, data.user);
             if (!tersimpan) {
-                statusEl.textContent = 'Login berhasil, tapi browser ini memblokir penyimpanan data lokal sehingga sesi tidak bisa disimpan. Coba matikan mode privasi/blokir cookie situs, lalu login lagi.';
-                statusEl.className = 'auth-form-status contact-form-error';
-                statusEl.style.display = 'block';
-                return;
+                console.warn('Browser ini memblokir localStorage/sessionStorage, sesi login hanya bertahan selama tab ini terbuka.');
             }
             window.location.href = 'profile.html';
         } catch (err) {
@@ -266,10 +263,7 @@
             }
             const tersimpan = saveCustomerAuth(data.token, data.user);
             if (!tersimpan) {
-                statusEl.textContent = 'Pendaftaran berhasil, tapi browser ini memblokir penyimpanan data lokal sehingga sesi tidak bisa disimpan. Coba matikan mode privasi/blokir cookie situs, lalu login lagi.';
-                statusEl.className = 'auth-form-status contact-form-error';
-                statusEl.style.display = 'block';
-                return;
+                console.warn('Browser ini memblokir localStorage/sessionStorage, sesi login hanya bertahan selama tab ini terbuka.');
             }
             window.location.href = 'profile.html';
         } catch (err) {
