@@ -215,7 +215,12 @@
             if (!tersimpan) {
                 console.warn('Browser ini memblokir localStorage/sessionStorage, sesi login hanya bertahan selama tab ini terbuka.');
             }
-            window.location.href = 'profile.html';
+            // Fallback: token juga dibawa lewat URL fragment (#) supaya tetap sampai
+            // ke profile.html walau localStorage & sessionStorage gagal (mis. dibuka
+            // lewat in-app browser WhatsApp/Instagram yang membatasi storage saat
+            // pindah halaman). Pakai '#' bukan '?' supaya token tidak ikut terkirim
+            // ke server / tercatat di riwayat/analytics.
+            window.location.href = tersimpan ? 'profile.html' : `profile.html#t=${encodeURIComponent(data.token)}`;
         } catch (err) {
             statusEl.textContent = err.message;
             statusEl.className = 'auth-form-status contact-form-error';
@@ -265,7 +270,7 @@
             if (!tersimpan) {
                 console.warn('Browser ini memblokir localStorage/sessionStorage, sesi login hanya bertahan selama tab ini terbuka.');
             }
-            window.location.href = 'profile.html';
+            window.location.href = tersimpan ? 'profile.html' : `profile.html#t=${encodeURIComponent(data.token)}`;
         } catch (err) {
             statusEl.textContent = err.message;
             statusEl.className = 'auth-form-status contact-form-error';

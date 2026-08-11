@@ -176,7 +176,17 @@
 
 <script src="script.js?v=2"></script>
 <script>
-    const token = getCustomerToken();
+    let token = getCustomerToken();
+
+    // Fallback: kalau storage kosong (localStorage/sessionStorage diblokir saat
+    // pindah halaman dari account.html), ambil token dari URL fragment (#t=...)
+    // yang dikirim account.html, lalu coba simpan lagi ke storage untuk halaman
+    // berikutnya. Fragment langsung dibersihkan dari address bar setelah dibaca.
+    if (!token && window.location.hash.startsWith('#t=')) {
+        token = decodeURIComponent(window.location.hash.slice(3));
+        history.replaceState(null, '', window.location.pathname);
+    }
+
     if (!token) {
         window.location.href = 'account.html';
     }
