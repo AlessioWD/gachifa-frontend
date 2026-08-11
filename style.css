@@ -25,6 +25,14 @@
 
 html {
     scroll-behavior: smooth;
+    /* Ukuran font dasar menyesuaikan lebar layar secara halus:
+       - HP kecil (~320px)  -> sekitar 14px
+       - HP besar/tablet    -> naik bertahap
+       - Desktop (~1440px+) -> maksimal 17px
+       Karena semua font-size di file ini pakai rem, seluruh teks
+       di web (judul, paragraf, badge, tombol, dst) ikut menyesuaikan
+       otomatis tanpa perlu diubah satu-satu. */
+    font-size: clamp(14px, 12px + 0.35vw, 17px);
 }
 
 body {
