@@ -114,7 +114,12 @@
     <section class="keranjang-section reveal">
         <div class="keranjang-header">
             <h2>Keranjang Belanja</h2>
-            <span id="keranjang-count">0 item</span>
+            <div class="keranjang-header-right">
+                <span id="keranjang-count">0 item</span>
+                <button id="clear-cart-btn" class="btn-clear-cart" onclick="hapusSemuaKeranjang()" style="display:none;">
+                    <i class="fas fa-trash-can"></i> Hapus Semua
+                </button>
+            </div>
         </div>
         <div id="keranjang-items">
             <p style="color: #666;">Keranjang kosong...</p>

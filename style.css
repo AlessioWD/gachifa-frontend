@@ -1320,6 +1320,8 @@ footer h3 .brand-coklat {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 2px solid var(--cream);
@@ -1331,12 +1333,67 @@ footer h3 .brand-coklat {
     font-size: 1.4rem;
 }
 
+.keranjang-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 #keranjang-count {
     background: var(--primary);
     color: white;
     padding: 5px 15px;
     border-radius: 20px;
     font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.btn-clear-cart {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--secondary);
+    border: 1.5px solid var(--secondary);
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.btn-clear-cart:hover {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-clear-cart:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .keranjang-section {
+        padding: 28px 6%;
+        margin: 30px 4%;
+    }
+
+    .keranjang-header h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .keranjang-header {
+        justify-content: flex-start;
+    }
+
+    .keranjang-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
 
 .keranjang-item {

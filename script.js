@@ -153,6 +153,18 @@ function hapusKeranjang(index) {
     updateNavBadge();
 }
 
+function hapusSemuaKeranjang() {
+    const keranjang = getKeranjang();
+    if (keranjang.length === 0) return;
+
+    if (!confirm('Kosongkan semua item di keranjang?')) return;
+
+    saveKeranjang([]);
+    updateTampilanKeranjang();
+    updateNavBadge();
+    showToast('Keranjang dikosongkan');
+}
+
 function formatRupiah(angka) {
     return 'Rp ' + angka.toLocaleString('id-ID');
 }
@@ -178,6 +190,7 @@ function updateTampilanKeranjang() {
     const keranjangDiv = document.getElementById('keranjang-items');
     const checkoutBtn = document.getElementById('checkout-btn');
     const countEl = document.getElementById('keranjang-count');
+    const clearBtn = document.getElementById('clear-cart-btn');
     if (!keranjangDiv) return;
 
     const keranjang = getKeranjang();
@@ -187,8 +200,11 @@ function updateTampilanKeranjang() {
     if (keranjang.length === 0) {
         keranjangDiv.innerHTML = '<p style="color: #666;">Keranjang kosong...</p>';
         if (checkoutBtn) checkoutBtn.style.display = 'none';
+        if (clearBtn) clearBtn.style.display = 'none';
         return;
     }
+
+    if (clearBtn) clearBtn.style.display = 'inline-flex';
 
     let total = 0;
     let html = '';
