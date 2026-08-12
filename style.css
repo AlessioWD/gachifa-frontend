@@ -1343,10 +1343,17 @@ footer h3 .brand-coklat {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     padding: 15px;
     background: var(--cream);
     margin-bottom: 10px;
     border-radius: 14px;
+}
+
+.keranjang-item > div:first-child {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .btn-hapus {
@@ -1357,6 +1364,8 @@ footer h3 .brand-coklat {
     border-radius: 50px;
     cursor: pointer;
     transition: 0.3s;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .btn-hapus:hover {
