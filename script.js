@@ -411,11 +411,41 @@ function setActiveNavByPage() {
 let activeCategory = 'all';
 let visibleLimit = 8;
 const LOAD_STEP = 8;
+let daftarKategori = [];
+
+async function muatDeskripsiKategori() {
+    try {
+        const res = await fetch(`${API_BASE_URL}/categories`);
+        if (!res.ok) return;
+        daftarKategori = await res.json();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function tampilkanDeskripsiKategori(cat) {
+    const el = document.getElementById('category-desc');
+    if (!el) return;
+
+    if (cat === 'all') {
+        el.style.display = 'none';
+        return;
+    }
+
+    const kategori = daftarKategori.find(k => kategoriKeSlug(k.name) === cat);
+    if (kategori && kategori.description) {
+        el.textContent = kategori.description;
+        el.style.display = 'block';
+    } else {
+        el.style.display = 'none';
+    }
+}
 
 function setCategory(cat, btnEl) {
     activeCategory = cat;
     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
     if (btnEl) btnEl.classList.add('active');
+    tampilkanDeskripsiKategori(cat);
     filterMenu();
 }
 

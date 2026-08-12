@@ -75,6 +75,8 @@
             </div>
         </div>
 
+        <p id="category-desc" class="category-desc" style="display:none;"></p>
+
         <div class="product-grid reveal-stagger reveal" id="product-grid">
             <p id="no-results" class="no-results" style="display:none;">Tidak ada roti yang cocok dengan pencarianmu.</p>
             <p id="loading-products" style="color:#666;">Memuat menu...</p>
@@ -194,7 +196,10 @@
 
     <script src="script.js?v=2"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', renderProductsFromApi);
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProductsFromApi();
+            muatDeskripsiKategori();
+        });
     </script>
 </body>
 </html>

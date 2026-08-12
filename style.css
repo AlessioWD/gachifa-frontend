@@ -1405,6 +1405,14 @@ footer h3 .brand-coklat {
     justify-content: center;
 }
 
+.category-desc {
+    text-align: center;
+    color: #7a7168;
+    font-size: 0.92rem;
+    margin: -6px 0 18px;
+    font-style: italic;
+}
+
 .category-btn {
     background: var(--white);
     border: 1.5px solid #e6dcd3;
