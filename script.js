@@ -181,11 +181,13 @@ function showConfirmModal(options) {
     });
 
     overlay.classList.add('confirm-modal-show');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeConfirmModal() {
     const overlay = document.getElementById('confirm-modal');
     if (overlay) overlay.classList.remove('confirm-modal-show');
+    document.body.style.overflow = '';
 }
 
 function formatRupiah(angka) {
