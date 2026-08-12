@@ -157,12 +157,35 @@ function hapusSemuaKeranjang() {
     const keranjang = getKeranjang();
     if (keranjang.length === 0) return;
 
-    if (!confirm('Kosongkan semua item di keranjang?')) return;
+    showConfirmModal({
+        onConfirm: function() {
+            saveKeranjang([]);
+            updateTampilanKeranjang();
+            updateNavBadge();
+            showToast('Keranjang dikosongkan');
+        }
+    });
+}
 
-    saveKeranjang([]);
-    updateTampilanKeranjang();
-    updateNavBadge();
-    showToast('Keranjang dikosongkan');
+function showConfirmModal(options) {
+    const overlay = document.getElementById('confirm-modal');
+    const okBtn = document.getElementById('confirm-modal-ok');
+    if (!overlay || !okBtn) return;
+
+    const newOkBtn = okBtn.cloneNode(true);
+    okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+
+    newOkBtn.addEventListener('click', function() {
+        closeConfirmModal();
+        if (options.onConfirm) options.onConfirm();
+    });
+
+    overlay.classList.add('confirm-modal-show');
+}
+
+function closeConfirmModal() {
+    const overlay = document.getElementById('confirm-modal');
+    if (overlay) overlay.classList.remove('confirm-modal-show');
 }
 
 function formatRupiah(angka) {

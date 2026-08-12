@@ -600,6 +600,137 @@ header {
     color: var(--primary);
 }
 
+/* ===== CONFIRM MODAL (pengganti confirm() bawaan browser) ===== */
+.confirm-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 26, 20, 0.6);
+    z-index: 2100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.confirm-modal-overlay.confirm-modal-show {
+    display: flex;
+}
+
+.confirm-modal-box {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px 28px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: confirmModalPop 0.2s ease;
+}
+
+@keyframes confirmModalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.confirm-modal-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: rgba(200, 90, 60, 0.12);
+    color: var(--secondary);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-modal-box h3 {
+    color: var(--primary);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.confirm-modal-box p {
+    color: #777;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-confirm-cancel,
+.btn-confirm-ok {
+    flex: 1;
+    padding: 11px 0;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-confirm-cancel {
+    background: var(--cream);
+    color: var(--primary);
+}
+
+.btn-confirm-cancel:hover {
+    background: #e5dbc9;
+}
+
+.btn-confirm-ok {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-confirm-ok:hover {
+    background: var(--primary);
+}
+
+.btn-confirm-cancel:active,
+.btn-confirm-ok:active {
+    transform: scale(0.96);
+}
+
+@media (max-width: 380px) {
+    .confirm-modal-box {
+        padding: 26px 20px 22px;
+    }
+
+    .confirm-modal-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+    .confirm-modal-box h3 {
+        font-size: 1.05rem;
+    }
+
+    .confirm-modal-box p {
+        font-size: 0.87rem;
+        margin-bottom: 18px;
+    }
+
+    .confirm-modal-actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .btn-confirm-cancel,
+    .btn-confirm-ok {
+        padding: 12px 0;
+    }
+}
+
 .riwayat-empty {
     color: #888;
     font-size: 0.9rem;
