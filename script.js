@@ -261,7 +261,7 @@ function checkout() {
     const keranjang = getKeranjang();
 
     if (keranjang.length === 0) {
-        alert("Keranjang masih kosong!");
+        showToast('Keranjang masih kosong!', 2500, 'warning');
         return;
     }
 
@@ -624,11 +624,13 @@ async function submitContactForm(event) {
 
 let toastTimeout;
 
-function showToast(message, duration = 2500) {
+function showToast(message, duration = 2500, type = 'success') {
     const toast = document.getElementById('toast');
     if (!toast) return;
 
     toast.textContent = message;
+    toast.classList.remove('toast-warning');
+    if (type === 'warning') toast.classList.add('toast-warning');
     toast.classList.add('toast-show');
 
     clearTimeout(toastTimeout);

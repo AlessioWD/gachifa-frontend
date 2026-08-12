@@ -1665,6 +1665,11 @@ footer h3 .brand-coklat {
     opacity: 1;
 }
 
+.toast.toast-warning::before {
+    content: '\f071';
+    color: #ffb020;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .footer-container {
