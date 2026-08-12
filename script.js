@@ -172,6 +172,8 @@ function showConfirmModal(options) {
     const okBtn = document.getElementById('confirm-modal-ok');
     if (!overlay || !okBtn) return;
 
+    closeMobileMenu();
+
     const newOkBtn = okBtn.cloneNode(true);
     okBtn.parentNode.replaceChild(newOkBtn, okBtn);
 
@@ -276,6 +278,8 @@ function checkout() {
         if (phoneInput) phoneInput.value = user.phone || '';
         if (addressInput) addressInput.value = user.address || '';
     }
+
+    closeMobileMenu();
 
     const modal = document.getElementById('checkout-modal');
     if (modal) modal.classList.add('checkout-modal-show');

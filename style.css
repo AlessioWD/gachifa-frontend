@@ -7,6 +7,10 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+a, button, input, textarea, select, [onclick] {
+    touch-action: manipulation;
+}
+
 :root {
     --primary: #8B5E3C;
     --secondary: #6B4226;
@@ -1374,14 +1378,14 @@ footer h3 .brand-coklat {
 
 .search-clear-btn {
     position: absolute;
-    right: 10px;
+    right: 4px;
     top: 50%;
     transform: translateY(-50%);
     background: #e6dcd3;
     border: none;
     color: var(--dark);
-    width: 22px;
-    height: 22px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     font-size: 1rem;
     line-height: 1;
@@ -1557,6 +1561,7 @@ footer h3 .brand-coklat {
     color: white;
     border: none;
     padding: 8px 15px;
+    min-height: 38px;
     border-radius: 50px;
     cursor: pointer;
     transition: 0.3s;
@@ -1725,6 +1730,8 @@ footer h3 .brand-coklat {
         font-size: 1.5rem;
         cursor: pointer;
         padding: 6px 8px;
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .nav-overlay {
@@ -1816,8 +1823,8 @@ footer h3 .brand-coklat {
     .nav-close-btn {
         background: rgba(255,255,255,0.18);
         border: none;
-        width: 28px;
-        height: 28px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         font-size: 1.2rem;
         line-height: 1;
@@ -2072,6 +2079,7 @@ footer h3 .brand-coklat {
     .btn-buy {
         padding: 8px 10px;
         font-size: 0.8rem;
+        min-height: 40px;
     }
 
     .badge {
@@ -2138,6 +2146,7 @@ footer h3 .brand-coklat {
     .category-btn {
         padding: 8px 16px;
         font-size: 0.8rem;
+        min-height: 38px;
     }
 
     .toast {
