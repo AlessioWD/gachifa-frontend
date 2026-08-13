@@ -597,7 +597,14 @@ header {
     line-height: 1;
     color: #888;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
 }
 
 .riwayat-modal-close:hover {
@@ -1826,7 +1833,6 @@ footer h3 .brand-coklat {
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        font-size: 1.2rem;
         line-height: 1;
         color: var(--white);
         cursor: pointer;
@@ -1836,6 +1842,27 @@ footer h3 .brand-coklat {
         justify-content: center;
         position: relative;
         z-index: 1;
+        font-size: 0;
+    }
+
+    .nav-close-btn::before,
+    .nav-close-btn::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 2px;
+        background: var(--white);
+        border-radius: 2px;
+        top: 50%;
+        left: 50%;
+    }
+
+    .nav-close-btn::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .nav-close-btn::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
     }
 
     .nav-close-btn:hover {
