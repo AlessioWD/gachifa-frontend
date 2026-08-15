@@ -68,10 +68,8 @@
                 <input type="text" id="searchInput" placeholder="Cari roti..." oninput="filterMenu()">
                 <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearch()" style="display:none;" aria-label="Hapus pencarian">&times;</button>
             </div>
-            <div class="category-filters">
+            <div class="category-filters" id="category-filters">
                 <button class="category-btn active" data-category="all" onclick="setCategory('all', this)">Semua</button>
-                <button class="category-btn" data-category="tawar" onclick="setCategory('tawar', this)">Roti Tawar</button>
-                <button class="category-btn" data-category="bun" onclick="setCategory('bun', this)">Bun & Roti Kecil</button>
             </div>
         </div>
 
@@ -194,7 +192,7 @@
     </div>
 </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             renderProductsFromApi();

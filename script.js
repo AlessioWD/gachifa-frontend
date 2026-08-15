@@ -422,9 +422,24 @@ async function muatDeskripsiKategori() {
         const res = await fetch(`${API_BASE_URL}/categories`);
         if (!res.ok) return;
         daftarKategori = await res.json();
+        renderCategoryFilters();
     } catch (err) {
         console.error(err);
     }
+}
+
+function renderCategoryFilters() {
+    const wrap = document.getElementById('category-filters');
+    if (!wrap || !Array.isArray(daftarKategori)) return;
+
+    let html = `<button class="category-btn active" data-category="all" onclick="setCategory('all', this)">Semua</button>`;
+
+    daftarKategori.forEach(kategori => {
+        const slug = kategoriKeSlug(kategori.name);
+        html += `<button class="category-btn" data-category="${slug}" onclick="setCategory('${slug}', this)">${kategori.name}</button>`;
+    });
+
+    wrap.innerHTML = html;
 }
 
 function tampilkanDeskripsiKategori(cat) {
