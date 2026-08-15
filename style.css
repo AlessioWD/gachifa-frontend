@@ -1394,14 +1394,30 @@ footer h3 .brand-coklat {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    font-size: 1rem;
-    line-height: 1;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 0;
     transition: 0.2s;
+    font-size: 0;
+}
+
+.search-clear-btn::before,
+.search-clear-btn::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 2px;
+    background: var(--dark);
+    border-radius: 2px;
+    top: 50%;
+    left: 50%;
+}
+
+.search-clear-btn::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.search-clear-btn::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .search-clear-btn:hover {
@@ -2220,19 +2236,33 @@ footer h3 .brand-coklat {
     }
 
     .menu-toolbar {
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
         margin-bottom: 25px;
-        gap: 12px;
+        gap: 10px;
     }
 
     .search-box {
-        max-width: 100%;
-        width: 100%;
+        max-width: none;
+        width: auto;
+        flex: 1;
+        min-width: 0;
     }
 
     .category-select-btn {
-        width: 100%;
+        width: 44px;
+        height: 44px;
+        min-height: 44px;
+        padding: 0;
+        border-radius: 50%;
         justify-content: center;
+        flex-shrink: 0;
+        gap: 0;
+    }
+
+    .category-select-btn span,
+    .category-select-btn .fa-chevron-down {
+        display: none;
     }
 
     .toast {
