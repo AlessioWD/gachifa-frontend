@@ -1412,8 +1412,18 @@ footer h3 .brand-coklat {
 .category-filters {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2px 2px 10px;
+    margin-bottom: -6px;
+}
+
+.category-filters::-webkit-scrollbar {
+    display: none;
 }
 
 .category-desc {
@@ -1435,6 +1445,8 @@ footer h3 .brand-coklat {
     font-size: 0.85rem;
     cursor: pointer;
     transition: 0.3s;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .category-btn:hover {
@@ -2166,8 +2178,7 @@ footer h3 .brand-coklat {
     }
 
     .category-filters {
-        width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .category-btn {
