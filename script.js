@@ -441,6 +441,16 @@ function renderCategoryFilters() {
 
     wrap.innerHTML = html;
     renderKategoriModalList();
+    updateCategoryMoreBtn();
+}
+
+function updateCategoryMoreBtn() {
+    const wrap = document.getElementById('category-filters');
+    const moreBtn = document.querySelector('.category-more-btn');
+    if (!wrap || !moreBtn) return;
+
+    const hasOverflow = wrap.scrollWidth > wrap.clientWidth + 2;
+    moreBtn.style.display = hasOverflow ? 'flex' : 'none';
 }
 
 function renderKategoriModalList() {
@@ -757,4 +767,10 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTampilanKeranjang();
     initScrollReveal();
     updateAccountNav();
+});
+
+let resizeTimeoutKategori;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeoutKategori);
+    resizeTimeoutKategori = setTimeout(updateCategoryMoreBtn, 150);
 });
