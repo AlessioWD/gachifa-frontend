@@ -440,6 +440,42 @@ function renderCategoryFilters() {
     });
 
     wrap.innerHTML = html;
+    renderKategoriModalList();
+}
+
+function renderKategoriModalList() {
+    const list = document.getElementById('kategori-modal-list');
+    if (!list || !Array.isArray(daftarKategori)) return;
+
+    let html = `<button type="button" class="kategori-modal-item${activeCategory === 'all' ? ' active' : ''}" data-category="all" onclick="pilihKategoriModal('all', this)">Semua</button>`;
+
+    daftarKategori.forEach(kategori => {
+        const slug = kategoriKeSlug(kategori.name);
+        const active = activeCategory === slug ? ' active' : '';
+        html += `<button type="button" class="kategori-modal-item${active}" data-category="${slug}" onclick="pilihKategoriModal('${slug}', this)">${kategori.name}</button>`;
+    });
+
+    list.innerHTML = html;
+}
+
+function pilihKategoriModal(slug, el) {
+    const btn = document.querySelector(`.category-btn[data-category="${slug}"]`);
+    setCategory(slug, btn);
+    closeKategoriModal();
+}
+
+function openKategoriModal() {
+    closeMobileMenu();
+    renderKategoriModalList();
+    const overlay = document.getElementById('kategori-modal');
+    if (overlay) overlay.classList.add('kategori-modal-show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeKategoriModal() {
+    const overlay = document.getElementById('kategori-modal');
+    if (overlay) overlay.classList.remove('kategori-modal-show');
+    document.body.style.overflow = '';
 }
 
 function tampilkanDeskripsiKategori(cat) {
