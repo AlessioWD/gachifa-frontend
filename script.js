@@ -429,48 +429,26 @@ async function muatDeskripsiKategori() {
 }
 
 function renderCategoryFilters() {
-    const wrap = document.getElementById('category-filters');
-    if (!wrap || !Array.isArray(daftarKategori)) return;
-
-    let html = `<button class="category-btn active" data-category="all" onclick="setCategory('all', this)">Semua</button>`;
-
-    daftarKategori.forEach(kategori => {
-        const slug = kategoriKeSlug(kategori.name);
-        html += `<button class="category-btn" data-category="${slug}" onclick="setCategory('${slug}', this)">${kategori.name}</button>`;
-    });
-
-    wrap.innerHTML = html;
     renderKategoriModalList();
-    updateCategoryMoreBtn();
-}
-
-function updateCategoryMoreBtn() {
-    const wrap = document.getElementById('category-filters');
-    const moreBtn = document.querySelector('.category-more-btn');
-    if (!wrap || !moreBtn) return;
-
-    const hasOverflow = wrap.scrollWidth > wrap.clientWidth + 2;
-    moreBtn.style.display = hasOverflow ? 'flex' : 'none';
 }
 
 function renderKategoriModalList() {
     const list = document.getElementById('kategori-modal-list');
     if (!list || !Array.isArray(daftarKategori)) return;
 
-    let html = `<button type="button" class="kategori-modal-item${activeCategory === 'all' ? ' active' : ''}" data-category="all" onclick="pilihKategoriModal('all', this)">Semua</button>`;
+    let html = `<button type="button" class="kategori-modal-item${activeCategory === 'all' ? ' active' : ''}" data-category="all" data-label="Semua" onclick="pilihKategoriModal('all', 'Semua')">Semua</button>`;
 
     daftarKategori.forEach(kategori => {
         const slug = kategoriKeSlug(kategori.name);
         const active = activeCategory === slug ? ' active' : '';
-        html += `<button type="button" class="kategori-modal-item${active}" data-category="${slug}" onclick="pilihKategoriModal('${slug}', this)">${kategori.name}</button>`;
+        html += `<button type="button" class="kategori-modal-item${active}" data-category="${slug}" data-label="${kategori.name}" onclick="pilihKategoriModal('${slug}', '${kategori.name.replace(/'/g, "\\'")}')">${kategori.name}</button>`;
     });
 
     list.innerHTML = html;
 }
 
-function pilihKategoriModal(slug, el) {
-    const btn = document.querySelector(`.category-btn[data-category="${slug}"]`);
-    setCategory(slug, btn);
+function pilihKategoriModal(slug, label) {
+    setCategory(slug, null, label);
     closeKategoriModal();
 }
 
@@ -506,10 +484,18 @@ function tampilkanDeskripsiKategori(cat) {
     }
 }
 
-function setCategory(cat, btnEl) {
+function setCategory(cat, btnEl, label) {
     activeCategory = cat;
-    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-    if (btnEl) btnEl.classList.add('active');
+
+    const labelEl = document.getElementById('category-select-label');
+    if (labelEl) {
+        labelEl.textContent = label || (cat === 'all' ? 'Semua' : cat);
+    }
+
+    document.querySelectorAll('.kategori-modal-item').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-category') === cat);
+    });
+
     tampilkanDeskripsiKategori(cat);
     filterMenu();
 }
@@ -767,10 +753,4 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTampilanKeranjang();
     initScrollReveal();
     updateAccountNav();
-});
-
-let resizeTimeoutKategori;
-window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeoutKategori);
-    resizeTimeoutKategori = setTimeout(updateCategoryMoreBtn, 150);
 });
