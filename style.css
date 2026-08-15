@@ -916,6 +916,12 @@ header {
     letter-spacing: 0.3px;
     z-index: 10;
     box-shadow: 0 4px 10px rgba(217, 123, 79, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1.2;
 }
 
 .badge-new {
